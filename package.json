@@ -4,11 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "concurrently \"cd server && yarn start\" \"cd client && yarn start\" ",
-    "dev": "concurrently \"cd server && yarn dev\" \"cd client && yarn start\" ",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "prod-install": "concurrently \"cd server && yarn\" \"cd client && yarn\" ",
-    "heroku-postbuild": "YARN_PRODUCTION=false yarn prod-install && cd client && yarn build"
+    "client-install": "yarn --cwd client",
+    "start": "yarn start --cwd server",
+    "server": "yarn dev --cwd server",
+    "client": "yarn start --cwd client",
+    "dev": "concurrently \"yarn server\" \"yarn client\"",
+    "heroku-postbuild": "YARN_PRODUCTION=false yarn --cwd client && yarn build --cwd client"
   },
   "repository": {
     "type": "git",
