@@ -9,7 +9,7 @@
     "server": "yarn --cwd server dev",
     "client": "yarn --cwd client start",
     "dev": "concurrently \"yarn server\" \"yarn client\"",
-    "heroku-postbuild": "YARN_PRODUCTION=false yarn --cwd client && yarn --cwd client build"
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false yarn --cwd client && yarn --cwd client build"
   },
   "repository": {
     "type": "git",
