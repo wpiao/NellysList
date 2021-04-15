@@ -1,10 +1,12 @@
 import React from 'react';
+import { AdDeck } from './AdDeck';
+import data from '../mock-data';
 import './App.css';
 
 const App = () => {
   return (
     <>
-      <h1>Hello world</h1>
+      <AdDeck ads={data.ads} />
     </>
   )
 }
