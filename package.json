@@ -1,0 +1,25 @@
+{
+  "name": "NellysList",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"cd server && yarn dev\" \"cd client && yarn start\" ",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wpiao/NellysList.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wpiao/NellysList/issues"
+  },
+  "homepage": "https://github.com/wpiao/NellysList#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "concurrently": "^6.0.2"
+  }
+}
