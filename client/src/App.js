@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
-import "./App.css";
+import React, { useEffect, useState } from 'react';
+import './App.css';
 
 const App = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const res = await fetch("/api/users");
+      const res = await fetch('/api/users');
       const users = await res.json();
-      console.log("users", users);
+      console.log('users', users);
       setData(users);
     };
     fetchUsers();
