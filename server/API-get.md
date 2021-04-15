@@ -10,11 +10,8 @@
 
   `GET`
   
-*  **URL Params**
-
-   **Required:**
- 
-   None
+*  **URL Params** <br />
+  `/ads?id=1`
 
 * **Data Params**
 
@@ -51,11 +48,6 @@
 
   * **Code:** 404 NOT FOUND <br />
     **Content:** `{ error : "User doesn't exist" }`
-
-  OR
-
-  * **Code:** 401 UNAUTHORIZED <br />
-    **Content:** `{ error : "You are unauthorized to make this request." }`
 
 * **Sample Call:**
 
