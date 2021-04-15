@@ -13,7 +13,7 @@ while (set) {
     condition: 'new',
     email: faker.internet.email(),
     zipCode: faker.address.zipCode(),
-    createDate: faker.datatype.datetime(),
+    createdDate: faker.datatype.datetime(),
     modifiedDate: faker.datatype.datetime()
   };
   ads.push(ad);
