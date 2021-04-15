@@ -8,7 +8,7 @@
     "dev": "concurrently \"cd server && yarn dev\" \"cd client && yarn start\" ",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prod-install": "concurrently \"cd server && yarn\" \"cd client && yarn\" ",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false yarn prod-install && cd client && yarn build"
+    "heroku-postbuild": "YARN_PRODUCTION=false yarn prod-install && cd client && yarn build"
   },
   "repository": {
     "type": "git",
