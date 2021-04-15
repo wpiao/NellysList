@@ -30,14 +30,8 @@
         "description": "red jordans",
         "photo": "www.photourl.com/1.jpg",
         "condition": "old",
-        "contact": {
-          "id": 1,
-          "firstName": "raymond",
-          "lastName": "aranda",
-          "phoneNumber": "5555555555",
-          "email": "email@gmail.com",
-          "zipCode": "94591"
-        },
+        "email": "email@gmail.com",
+        "zipCode": "94591",
         "createdDate": "2020-04-06 15:30:10", // YYYY-MM-DD HH:MM:SS
         "modifiedDate": "2020-04-16 15:30:10", // DateTimes in UTC
       }

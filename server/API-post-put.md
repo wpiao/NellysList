@@ -26,14 +26,8 @@
             "description": "red jordans", // required
             "photo": "www.photourl.com/1.jpg",
             "condition": "old",
-            "contact": {
-                "id": 1,
-                "firstName": "raymond",
-                "lastName": "aranda",
-                "phoneNumber": "5555555555",
-                "email": "email@gmail.com",
-                "zipCode": "94591" // required
-            }
+            "email": "email@gmail.com",
+            "zipCode": "94591" // required
         }
     ]
     ```
