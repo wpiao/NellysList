@@ -4,6 +4,7 @@ const { google } = require('googleapis');
 const jwtClient = require('../bin/jwtClient.js');
 const spreadsheetId = process.env.SPREADSHEET_ID;
 const sheets = google.sheets('v4');
+const uuidv4 = require('uuid').v4;
 const moment = require('moment');
 let sheetRange = 'Ads!A2:J';
 
@@ -45,7 +46,6 @@ router.post('/', async (req, res, next) => {
   const createdDate = now;
   const modifiedDate = now;
   const {
-    id,
     title,
     price,
     description,
@@ -54,6 +54,7 @@ router.post('/', async (req, res, next) => {
     email,
     zipCode,
   } = req.body;
+  const id = uuidv4();
   const sheetsRequest = {
     spreadsheetId: spreadsheetId,
     range: sheetRange,
@@ -81,7 +82,9 @@ router.post('/', async (req, res, next) => {
   try {
     const response = (await sheets.spreadsheets.values.append(sheetsRequest))
       .data;
-    res.status(200).json();
+    res.status(200).json({
+      id: id,
+    });
   } catch (err) {
     console.error(err);
     res.send(err);
