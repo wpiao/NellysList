@@ -1,16 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { useGetAds } from '../hooks/useGetAds';
 import { AdDeck } from './AdDeck';
 // leave the mock data for now, will delete it right before deployment
 // import data from '../mock-data';
-import { getAds } from '../api/apiUtils';
 import './App.css';
 
 const App = () => {
-  const [ads, setAds] = useState([]);
-
-  useEffect(() => {
-    getAds(setAds);
-  }, [])
+  const ads = useGetAds();
 
   return (
     <>
