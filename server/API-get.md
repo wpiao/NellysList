@@ -11,7 +11,7 @@
   `GET`
   
 *  **URL Params** <br />
-  `/ads?id=1`
+  `/api/ads?id=1`
 
 * **Data Params**
 
@@ -47,7 +47,7 @@
 
   ```javascript
     $.ajax({
-      url: "/ads",
+      url: "/api/ads",
       dataType: "json",
       type : "GET",
       success : function(r) {
