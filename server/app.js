@@ -23,13 +23,13 @@ app.use(cookieParser());
 app.use('/api/users', usersRouter);
 
 // Serve static assets if in production
-// if (process.env.NODE_ENV === 'production') {
-// Set static folder
-app.use(express.static('../client/build'));
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve('../client', 'build', 'index.html'));
-});
-// }
+if (process.env.NODE_ENV === 'production') {
+  // Set static folder
+  app.use(express.static('../client/build'));
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve('../client', 'build', 'index.html'));
+  });
+}
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
