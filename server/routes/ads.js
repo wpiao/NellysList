@@ -13,7 +13,6 @@ const jwtClient = new google.auth.JWT(
 jwtClient.authorize(function (err, tokens) {
   if (err) {
     console.log(err);
-    return;
   } else {
     console.log('Successfully connected to Google Spreadsheet!');
   }
@@ -35,10 +34,9 @@ router.get('/', (req, res, next) => {
         console.log('The API returned an error: ' + err);
       } else {
         console.log('Ads retrieved from ' + sheetRange);
-        var ads = response.data.values;
-        var result = [];
-        for (ad of ads) {
-          result.push({
+        const ads = response.data.values;
+        objs = ads.map((ad) => {
+          return {
             id: ad[0],
             title: ad[1],
             price: ad[2],
@@ -49,9 +47,9 @@ router.get('/', (req, res, next) => {
             zipCode: ad[7],
             createdDate: ad[8],
             modifiedDate: ad[9],
-          });
-        }
-        res.send(result);
+          };
+        });
+        res.send(objs);
       }
     }
   );
