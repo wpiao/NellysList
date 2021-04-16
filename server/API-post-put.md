@@ -1,10 +1,12 @@
-**POST & PUT /ads**
+**POST /ads, PUT /ad**
 ----
   Returns json data about all ads filtered by params. 
 
 * **URL**
 
-  /api/ad
+  /api/ads `POST`
+  
+  /api/ad `PUT`
 
 * **Method:**
 
@@ -51,7 +53,7 @@
 
   ```javascript
     $.ajax({
-      url: "/api/ad",
+      url: "/api/ads",
       dataType: "json",
       type : "POST"
     });
