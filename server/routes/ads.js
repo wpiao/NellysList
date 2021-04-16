@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const { google } = require('googleapis');
-const jwtClient = require('../bin/jwtClient.js')
+const jwtClient = require('../bin/jwtClient.js');
 const spreadsheetId = process.env.SPREADSHEET_ID;
 const sheets = google.sheets('v4');
-let sheetRange = 'Ads!A2:J10';
+let sheetRange = 'Ads!A:J';
 
 router.get('/', (req, res, next) => {
   sheets.spreadsheets.values.get(
@@ -37,6 +37,40 @@ router.get('/', (req, res, next) => {
       }
     }
   );
+});
+
+router.post('/', async (req, res, next) => {
+  reqData = req.body;
+  const sheetsRequest = {
+    spreadsheetId: spreadsheetId,
+    range: sheetRange,
+    valueInputOption: 'USER_ENTERED',
+    insertDataOption: 'INSERT_ROWS',
+    resource: {
+      majorDimension: 'ROWS',
+      values: [
+        [
+          reqData.id,
+          reqData.title,
+          reqData.price,
+          reqData.description,
+          reqData.photo,
+          reqData.condition,
+          reqData.email,
+          reqData.zipCode,
+        ],
+      ],
+    },
+    auth: jwtClient,
+  };
+  try {
+    const response = (await sheets.spreadsheets.values.append(sheetsRequest))
+      .data;
+    res.send(200);
+  } catch (err) {
+    console.error(err);
+    res.send(err);
+  }
 });
 
 module.exports = router;
