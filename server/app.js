@@ -19,7 +19,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // Use Routes
-// app.use('/', indexRouter);
+app.use('/', indexRouter);
 app.use('/api/users', usersRouter);
 
 // Serve static assets if in production
@@ -29,7 +29,7 @@ app.use('/api/users', usersRouter);
 
 app.get('*', (req, res) => {
   console.log('res!!!!!!!', res);
-  res.sendFile(path.resolve('..\\client', 'build', 'index.html'));
+  res.sendFile(path.resolve('../client', 'build', 'index.html'));
 });
 // }
 

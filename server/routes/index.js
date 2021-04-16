@@ -4,7 +4,7 @@ var path = require('path');
 
 /* GET home page. */
 router.get('/items', function (req, res, next) {
-  res.json({});
+  res.sendFile(path.resolve('../client', 'build', 'index.html'));
 });
 
 module.exports = router;
