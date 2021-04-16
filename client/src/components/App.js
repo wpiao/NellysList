@@ -1,18 +1,9 @@
 import React from 'react';
-import { AdDeck } from './AdDeck';
-import data from '../mock-data';
 import './App.css';
-import { Header } from './Header';
-import { Footer } from './Footer';
+import { Home } from './Home';
 
 const App = () => {
-  return (
-    <>
-      <Header />
-      <AdDeck ads={data.ads} />
-      <Footer />
-    </>
-  );
+  return <Home />;
 };
 
 export default App;
