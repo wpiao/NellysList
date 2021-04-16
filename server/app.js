@@ -25,12 +25,12 @@ app.use('/api/users', usersRouter);
 // Serve static assets if in production
 // if (process.env.NODE_ENV === 'production') {
 // Set static folder
-// app.use(express.static('..\\client\\build'));
+app.use(express.static('../client/build'));
 
-// app.get('*', (req, res) => {
-//   console.log('res!!!!!!!', res);
-//   res.sendFile(path.resolve('../client', 'build', 'index.html'));
-// });
+app.get('*', (req, res) => {
+  console.log('res!!!!!!!', res);
+  res.sendFile(path.resolve('../client', 'build', 'index.html'));
+});
 // }
 
 // catch 404 and forward to error handler
