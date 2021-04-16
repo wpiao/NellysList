@@ -1,11 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const { google } = require('googleapis');
-const privatekey = require('../config/client_secret.json');
 const jwtClient = new google.auth.JWT(
-  privatekey.client_email,
+  process.env.CLIENT_EMAIL,
   null,
-  privatekey.private_key,
+  process.env.PRIVATE_KEY,
   ['https://www.googleapis.com/auth/spreadsheets']
 );
 
