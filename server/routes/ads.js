@@ -1,23 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { google } = require('googleapis');
-const privatekey = require('../config/client_secret.json');
-const jwtClient = new google.auth.JWT(
-  privatekey.client_email,
-  null,
-  privatekey.private_key,
-  ['https://www.googleapis.com/auth/spreadsheets']
-);
-
-//authenticate request
-jwtClient.authorize(function (err, tokens) {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log('Successfully connected to Google Spreadsheet!');
-  }
-});
-
+const jwtClient = require('../bin/jwtClient.js')
 const spreadsheetId = process.env.SPREADSHEET_ID;
 const sheets = google.sheets('v4');
 let sheetRange = 'Ads!A2:J10';
