@@ -22,7 +22,7 @@
     ```javascript
     [
         {
-            "id": 1,
+            "id": null,
             "title": "shoes", // required
             "price": 50.00,
             "description": "red jordans", // required
@@ -36,8 +36,13 @@
 
 * **Success Response:**
 
-    * **Code:** 200 OK <br />
-    `POST`, `PUT`
+    * **Code:** 201 OK <br />
+      `POST`, `PUT`
+      
+      ```javascript
+      { "id": "719dc1b5-2c67-4b33-b020-ab7ba71519a6" }
+      ```
+      
 
     * **Code:** 204 OK <br /> 
     `PUT`
@@ -52,9 +57,24 @@
 * **Sample Call:**
 
   ```javascript
+    var jsonData = [
+        {
+            "id": null,
+            "title": "shoes",
+            "price": 50.00,
+            "description": "red jordans", 
+            "photo": "www.photourl.com/1.jpg",
+            "condition": "old",
+            "email": "email@gmail.com",
+            "zipCode": "94591" 
+        }
+    ]
+
     $.ajax({
       url: "/api/ads",
       dataType: "json",
       type : "POST"
+      data: jsonData,
+      contentType: "application/json"
     });
   ```
