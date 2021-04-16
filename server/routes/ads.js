@@ -5,7 +5,7 @@ const jwtClient = require('../bin/jwtClient.js');
 const spreadsheetId = process.env.SPREADSHEET_ID;
 const sheets = google.sheets('v4');
 const moment = require('moment');
-let sheetRange = 'Ads!A:J';
+let sheetRange = 'Ads!A2:J';
 
 router.get('/', (req, res, next) => {
   sheets.spreadsheets.values.get(
