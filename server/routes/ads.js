@@ -54,7 +54,13 @@ router.post('/', async (req, res, next) => {
     email,
     zipCode,
   } = req.body;
+  if (req.body.id) {
+    res
+      .status(400)
+      .json({ error: 'Remove id from request body and try again.' });
+  }
   const id = uuidv4();
+
   const sheetsRequest = {
     spreadsheetId: spreadsheetId,
     range: sheetRange,
