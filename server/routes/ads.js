@@ -13,7 +13,6 @@ const jwtClient = new google.auth.JWT(
 jwtClient.authorize(function (err, tokens) {
   if (err) {
     console.log(err);
-    return;
   } else {
     console.log('Successfully connected to Google Spreadsheet!');
   }
