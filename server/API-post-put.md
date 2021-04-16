@@ -4,11 +4,11 @@
 
 * **URL**
 
-  /ads
+  /api/ad
 
 * **Method:**
 
-  `POST`
+  `POST`, `PUT`
   
 *  **URL Params**
 
@@ -51,7 +51,7 @@
 
   ```javascript
     $.ajax({
-      url: "/ads",
+      url: "/api/ad",
       dataType: "json",
       type : "POST"
     });
