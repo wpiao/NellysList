@@ -1,8 +1,8 @@
-var express = require('express');
-var router = express.Router();
-let { google } = require('googleapis');
-let privatekey = require('../config/client_secret.json');
-let jwtClient = new google.auth.JWT(
+const express = require('express');
+const router = express.Router();
+const { google } = require('googleapis');
+const privatekey = require('../config/client_secret.json');
+const jwtClient = new google.auth.JWT(
   privatekey.client_email,
   null,
   privatekey.private_key,
@@ -18,18 +18,18 @@ jwtClient.authorize(function (err, tokens) {
   }
 });
 
-let spreadsheetId = process.env.SPREADSHEET_ID;
+const spreadsheetId = process.env.SPREADSHEET_ID;
+const sheets = google.sheets('v4');
 let sheetRange = 'Ads!A2:J10';
-let sheets = google.sheets('v4');
 
-router.get('/', function (req, res, next) {
+router.get('/', (req, res, next) => {
   sheets.spreadsheets.values.get(
     {
       auth: jwtClient,
       spreadsheetId: spreadsheetId,
       range: sheetRange,
     },
-    function (err, response) {
+    (err, response) => {
       if (err) {
         console.log('The API returned an error: ' + err);
       } else {
