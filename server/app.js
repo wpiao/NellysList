@@ -9,23 +9,19 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 
-// view engine setup
-// app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'jade');
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // Use Routes
-// app.use('/', indexRouter);
 app.use('/api/users', usersRouter);
 
 // Serve static assets if in production
 if (process.env.NODE_ENV === 'production') {
   // Set static folder
   app.use(express.static('../client/build'));
+
   app.get('*', (req, res) => {
     res.sendFile(path.resolve('../client', 'build', 'index.html'));
   });
@@ -42,9 +38,8 @@ app.use(function (err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.json(err);
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
 });
 
 module.exports = app;
