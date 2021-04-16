@@ -1,12 +1,22 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { AdDeck } from './AdDeck';
-import data from '../mock-data';
+// import data from '../mock-data';
+import { getAds } from '../api/apiUtils';
 import './App.css';
 
 const App = () => {
+  const [ads, setAds] = useState([]);
+
+  console.log(getAds);
+
+  useEffect(() => {
+    console.log('getAds called');
+    getAds(setAds);
+  }, [])
+
   return (
     <>
-      <AdDeck ads={data.ads} />
+      <AdDeck ads={ads} />
     </>
   )
 }
