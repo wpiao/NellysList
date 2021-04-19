@@ -118,3 +118,5 @@ dist
 
 # other 
 .DS_Store
+test.js
+*.zip
