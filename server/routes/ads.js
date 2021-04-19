@@ -31,8 +31,8 @@ router.get('/', (req, res, next) => {
             condition: ad[5],
             email: ad[6],
             zipCode: ad[7],
-            createdDate: ad[8],
-            modifiedDate: ad[9],
+            modifiedDate: ad[8],
+            createdDate: ad[9],
           };
         });
         res.send(objs);
