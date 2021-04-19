@@ -9,3 +9,15 @@ export const getAds = async () => {
     console.log(err);
   }
 };
+
+export const postAds = async (ad) => {
+  try {
+    const res = await superagent
+      .post('/api/ads')
+      .send(ad)
+      .set('accept', 'json');
+    return res.body;
+  } catch (err) {
+    console.log(err);
+  }
+};
