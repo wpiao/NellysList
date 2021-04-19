@@ -8,7 +8,9 @@ const uuidv4 = require('uuid').v4;
 const moment = require('moment');
 let sheetRange = 'Ads!A2:J';
 
+// get all ads
 router.get('/', (req, res, next) => {
+  let id = req.query.id;
   sheets.spreadsheets.values.get(
     {
       auth: jwtClient,
@@ -21,26 +23,37 @@ router.get('/', (req, res, next) => {
       } else {
         console.log('Ads retrieved from ' + sheetRange);
         const ads = response.data.values;
-        objs = ads.map((ad) => {
-          return {
-            id: ad[0],
-            title: ad[1],
-            price: ad[2],
-            description: ad[3],
-            photo: ad[4],
-            condition: ad[5],
-            email: ad[6],
-            zipCode: ad[7],
-            modifiedDate: ad[8],
-            createdDate: ad[9],
-          };
-        });
-        res.send(objs);
+        let result;
+        // if ID query param exists, filter for that id only.
+        if (id) {
+          result = ads.filter((ad) => {
+            if (ad[0] === id) {
+              return ad;
+            }
+          });
+        } else {
+          result = ads.map((ad) => {
+            return {
+              id: ad[0],
+              title: ad[1],
+              price: ad[2],
+              description: ad[3],
+              photo: ad[4],
+              condition: ad[5],
+              email: ad[6],
+              zipCode: ad[7],
+              modifiedDate: ad[8],
+              createdDate: ad[9],
+            };
+          });
+        }
+        res.send(result);
       }
     }
   );
 });
 
+// post new ad
 router.post('/', async (req, res, next) => {
   const now = moment.utc().format('YYYY-MM-DD HH:mm:ss');
   const createdDate = now;
