@@ -6,11 +6,11 @@ export const useGetAds = () => {
 
   useEffect(() => {
     const fetchGetAds = async () => {
-      const ads = await getAds();
-      setAds(ads);
+      const res = await getAds();
+      setAds(res);
     };
     fetchGetAds();
-  }, [input]);
+  }, []);
 
   return ads;
 };
