@@ -47,7 +47,7 @@ router.get('/', (req, res, next) => {
             };
           });
         }
-        res.send(result);
+        res.status(200).json(result);
       }
     }
   );
