@@ -1,18 +1,17 @@
 import React from 'react';
-import { useGetAds } from '../hooks/useGetAds';
-import { AdDeck } from './AdDeck';
-// leave the mock data for now, will delete it right before deployment
-// import data from '../mock-data';
 import './App.css';
+import { Home } from './Home';
+import { Header } from './Header';
+import { Footer } from './Footer';
 
 const App = () => {
-  const ads = useGetAds();
-
   return (
     <>
-      <AdDeck ads={ads} />
+      <Header />
+      <Home />
+      <Footer />
     </>
-  )
-}
+  );
+};
 
 export default App;

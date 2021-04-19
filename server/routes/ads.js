@@ -1,25 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const { google } = require('googleapis');
-const jwtClient = new google.auth.JWT(
-  process.env.CLIENT_EMAIL,
-  null,
-  process.env.PRIVATE_KEY,
-  ['https://www.googleapis.com/auth/spreadsheets']
-);
-
-//authenticate request
-jwtClient.authorize(function (err, tokens) {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log('Successfully connected to Google Spreadsheet!');
-  }
-});
-
+const jwtClient = require('../bin/jwtClient.js');
 const spreadsheetId = process.env.SPREADSHEET_ID;
 const sheets = google.sheets('v4');
-let sheetRange = 'Ads!A2:J10';
+const uuidv4 = require('uuid').v4;
+const moment = require('moment');
+let sheetRange = 'Ads!A2:J';
 
 router.get('/', (req, res, next) => {
   sheets.spreadsheets.values.get(
@@ -52,6 +39,62 @@ router.get('/', (req, res, next) => {
       }
     }
   );
+});
+
+router.post('/', async (req, res, next) => {
+  const now = moment.utc().format('YYYY-MM-DD HH:mm:ss');
+  const createdDate = now;
+  const modifiedDate = now;
+  const {
+    title,
+    price,
+    description,
+    photo,
+    condition,
+    email,
+    zipCode,
+  } = req.body;
+  if (req.body.id) {
+    res
+      .status(400)
+      .json({ error: 'Remove id from request body and try again.' });
+  }
+  const id = uuidv4();
+
+  const sheetsRequest = {
+    spreadsheetId: spreadsheetId,
+    range: sheetRange,
+    valueInputOption: 'USER_ENTERED',
+    insertDataOption: 'INSERT_ROWS',
+    resource: {
+      majorDimension: 'ROWS',
+      values: [
+        [
+          id,
+          title,
+          price,
+          description,
+          photo,
+          condition,
+          email,
+          zipCode,
+          createdDate,
+          modifiedDate,
+        ],
+      ],
+    },
+    auth: jwtClient,
+  };
+  try {
+    const response = (await sheets.spreadsheets.values.append(sheetsRequest))
+      .data;
+    res.status(200).json({
+      id: id,
+    });
+  } catch (err) {
+    console.error(err);
+    res.send(err);
+  }
 });
 
 module.exports = router;
