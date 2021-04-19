@@ -5,10 +5,10 @@ export const Ad = ({ ad }) => {
   return (
     <>
       <Card style={{ width: '18rem' }}>
-        <Card.Img variant="top" src={ad.photo} />
+        <Card.Img variant="top" src={ad.photo} style={{ height: 300 }} />
         <Card.Body>
-          <Card.Title>{ad.title}</Card.Title>
-          <Card.Text>{ad.price}</Card.Text>
+          <Card.Title style={{ textAlign: 'center' }}>{ad.title}</Card.Title>
+          <Card.Text style={{ textAlign: 'center' }}>${ad.price}</Card.Text>
         </Card.Body>
       </Card>
     </>

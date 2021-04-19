@@ -1,7 +1,8 @@
 import React from 'react';
 import { AdDeck } from './AdDeck';
-import data from '../mock-data';
+import { useGetAds } from '../hooks/useGetAds';
 
 export const Home = () => {
-  return <AdDeck ads={data.ads} />;
+  const ads = useGetAds();
+  return <AdDeck ads={ads} />;
 };
