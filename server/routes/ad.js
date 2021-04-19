@@ -70,9 +70,7 @@ router.put('/', async (req, res, next) => {
     const processedData = await findRowById(getRes.data.values, id);
 
     if (processedData === null) {
-      res.status(400).json({
-        error: 'Input not valid. Please check your request body and try again.',
-      });
+      res.status(404).json('Ad Not Found. Please check ID.');
     }
 
     // PUT row in sheet with desired row values and sheetrange
