@@ -56,10 +56,6 @@ router.put('/', async (req, res, next) => {
       }
     });
 
-    if (processedData === null) {
-      throw Error('No matching ID found');
-    }
-
     return processedData;
   };
 
@@ -73,20 +69,23 @@ router.put('/', async (req, res, next) => {
     // Process response to set up following PUT request
     const processedData = await findRowById(getRes.data.values, id);
 
+    if (processedData === null) {
+      res.status(400).json({
+        error: 'Input not valid. Please check your request body and try again.',
+      });
+    }
+
     // PUT row in sheet with desired row values and sheetrange
-    const putSheetsRes = await sheets.spreadsheets.values.update({
+    await sheets.spreadsheets.values.update({
       ...sheetsReq,
       range: processedData.sheetRange,
       valueInputOption: 'USER_ENTERED',
       resource: processedData.resource,
     });
 
-    if (putSheetsRes.status !== 200) {
-      throw Error('Something went wrong. Please try again.');
-    }
-
     return res.status(204).json();
   } catch (err) {
+    // TODO: Error response. Code / Message?
     console.log(err);
   }
 });
