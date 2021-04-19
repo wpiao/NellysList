@@ -7,6 +7,16 @@ const sheets = google.sheets('v4');
 const moment = require('moment');
 let sheetRange = 'Ads!A2:J';
 
+const findRowById = (rows, id) => {
+  rows.forEach((row, index) => {
+    if (row[0] === id) {
+      // account for first row being the column names
+      return index + 2;
+    }
+  });
+  return null;
+};
+
 router.put('/', async (req, res, next) => {
   const modifiedDate = moment.utc().format('YYYY-MM-DD HH:mm:ss');
   const {
@@ -20,23 +30,18 @@ router.put('/', async (req, res, next) => {
     zipCode,
   } = req.body;
 
-  const fetchGetSheets = async () => {
-    const req = {
-      auth: jwtClient,
-      spreadsheetId: spreadsheetId,
-      range: sheetRange,
-    };
-
-    try {
-      const response = await sheets.spreadsheets.values.get(req);
-      return response;
-    } catch (err) {
-      console.log(err);
-    }
+  const getSheetsReq = {
+    auth: jwtClient,
+    spreadsheetId: spreadsheetId,
+    range: sheetRange,
   };
 
-  const response = await fetchGetSheets();
-  return res.json(response.data);
+  try {
+    const response = await sheets.spreadsheets.values.get(getSheetsReq);
+    return res.json(response.data);
+  } catch (err) {
+    console.log(err);
+  }
 
   // sheets.spreadsheets.values.get(
   //   {
