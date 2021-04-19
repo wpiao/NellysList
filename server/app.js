@@ -6,6 +6,7 @@ const logger = require('morgan');
 const cors = require('cors');
 
 const adsRouter = require('./routes/ads');
+const adRouter = require('./routes/ad');
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use(cors());
 
 const apiPrefix = '/api';
 app.use(apiPrefix + '/ads', adsRouter);
+app.use(apiPrefix + '/ad', adRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
