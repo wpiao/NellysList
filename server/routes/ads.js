@@ -8,39 +8,51 @@ const uuidv4 = require('uuid').v4;
 const moment = require('moment');
 let sheetRange = 'Ads!A2:J';
 
-router.get('/', (req, res, next) => {
-  sheets.spreadsheets.values.get(
-    {
-      auth: jwtClient,
-      spreadsheetId: spreadsheetId,
-      range: sheetRange,
-    },
-    (err, response) => {
-      if (err) {
-        console.log('The API returned an error: ' + err);
-      } else {
-        console.log('Ads retrieved from ' + sheetRange);
-        const ads = response.data.values;
-        objs = ads.map((ad) => {
-          return {
-            id: ad[0],
-            title: ad[1],
-            price: ad[2],
-            description: ad[3],
-            photo: ad[4],
-            condition: ad[5],
-            email: ad[6],
-            zipCode: ad[7],
-            modifiedDate: ad[8],
-            createdDate: ad[9],
-          };
-        });
-        res.send(objs);
+// get all ads
+router.get('/', async (req, res, next) => {
+  let id = req.query.id;
+  const processData = async (data) => {
+    return data.map((ad) => {
+      return {
+        id: ad[0],
+        title: ad[1],
+        price: ad[2],
+        description: ad[3],
+        photo: ad[4],
+        condition: ad[5],
+        email: ad[6],
+        zipCode: ad[7],
+        modifiedDate: ad[8],
+        createdDate: ad[9],
+      };
+    });
+  };
+
+  const getRes = await sheets.spreadsheets.values.get({
+    auth: jwtClient,
+    spreadsheetId: spreadsheetId,
+    range: sheetRange,
+  });
+
+  let result = await processData(getRes.data.values);
+
+  if (!id) {
+    res.status(200).json(result);
+  } else {
+    result = result.filter((item) => {
+      if (item.id === id) {
+        return item;
       }
+    });
+    if (result.length === 0) {
+      res.status(404).json('Ad not found. Please check your id.');
+    } else {
+      res.status(200).json(result);
     }
-  );
+  }
 });
 
+// post new ad
 router.post('/', async (req, res, next) => {
   const now = moment.utc().format('YYYY-MM-DD HH:mm:ss');
   const createdDate = now;
