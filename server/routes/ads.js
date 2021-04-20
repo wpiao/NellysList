@@ -52,6 +52,50 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+// delete ad
+router.delete('/', async (req, res, next) => {
+  let id = req.query.id;
+
+  const findRowById = async (data) => {
+    for (let i = 0; i < data.length; i++) {
+      if (data[i][0] === id) {
+        return i;
+      }
+    }
+  };
+
+  const getRes = await sheets.spreadsheets.values.get({
+    auth: jwtClient,
+    spreadsheetId: spreadsheetId,
+    range: sheetRange,
+  });
+
+  const rowToDelete = await findRowById(getRes.data.values);
+  if (rowToDelete) {
+    await sheets.spreadsheets.batchUpdate({
+      auth: jwtClient,
+      spreadsheetId: spreadsheetId,
+      resource: {
+        requests: [
+          {
+            deleteDimension: {
+              range: {
+                sheetId: 0,
+                dimension: 'ROWS',
+                startIndex: rowToDelete + 1,
+                endIndex: rowToDelete + 2,
+              },
+            },
+          },
+        ],
+      },
+    });
+    res.status(204).json();
+  } else {
+    res.status(404).json({"error": "ID not found."})
+  }
+});
+
 // post new ad
 router.post('/', async (req, res, next) => {
   const now = moment.utc().format('YYYY-MM-DD HH:mm:ss');
