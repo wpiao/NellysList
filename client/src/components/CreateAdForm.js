@@ -13,8 +13,7 @@ const AD_INPUTS = {
   ZIP_CODE: 'zipCode',
 };
 
-export const CreateAdForm = (props) => {
-  const { id, handleSubmit } = props;
+export const CreateAdForm = ({ id, handleSubmit }) => {
   const [ad, setAd] = useState({});
 
   const handleOnChange = (e, adKey) => {
@@ -31,6 +30,7 @@ export const CreateAdForm = (props) => {
   const submit = (e) => {
     e.preventDefault();
     handleSubmit(ad);
+    e.target.reset();
   };
 
   return (
