@@ -38,7 +38,7 @@ export const CreateAdForm = (props) => {
       <Form onSubmit={submit}>
         <Form.Row>
           <Col xs={6}>
-            <Form.Group controlId={AD_INPUTS.TITLE}>
+            <Form.Group controlId={AD_INPUTS.TITLE} className="required">
               <Form.Label>Title</Form.Label>
               <Form.Control
                 type="text"
@@ -46,10 +46,11 @@ export const CreateAdForm = (props) => {
                 onChange={(e) => handleOnChange(e, AD_INPUTS.TITLE)}
               />
             </Form.Group>
-            <Form.Group controlId={AD_INPUTS.DESCRIPTION}>
+            <Form.Group controlId={AD_INPUTS.DESCRIPTION} className="required">
               <Form.Label>Description</Form.Label>
               <Form.Control
-                type="text"
+                as="textarea"
+                rows={3}
                 placeholder="Enter Description"
                 onChange={(e) => handleOnChange(e, AD_INPUTS.DESCRIPTION)}
               />
@@ -84,7 +85,7 @@ export const CreateAdForm = (props) => {
             </Form.Group>
           </Col>
           <Col xs={6}>
-            <Form.Group controlId={AD_INPUTS.EMAIL}>
+            <Form.Group controlId={AD_INPUTS.EMAIL} className="required">
               <Form.Label>Email</Form.Label>
               <Form.Control
                 type="text"
@@ -92,7 +93,7 @@ export const CreateAdForm = (props) => {
                 onChange={(e) => handleOnChange(e, AD_INPUTS.EMAIL)}
               />
             </Form.Group>
-            <Form.Group controlId={AD_INPUTS.ZIP_CODE}>
+            <Form.Group controlId={AD_INPUTS.ZIP_CODE} className="required">
               <Form.Label>Zip Code</Form.Label>
               <Form.Control
                 type="text"
