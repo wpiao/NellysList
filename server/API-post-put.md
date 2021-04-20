@@ -1,6 +1,6 @@
 **POST /ads, PUT /ad**
 ----
-  Returns json data about all ads filtered by params. 
+  Creates or edits an ad. 
 
 * **URL**
 
