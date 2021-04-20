@@ -1,16 +1,20 @@
 import React from 'react';
 import { CreateAdForm } from './CreateAdForm';
 import { postAds, getAds } from '../api/apiUtils';
+import { useAlert } from 'react-alert';
 
 export const CreateAdFormWrapper = ({ updateAds }) => {
+  const alert = useAlert();
+
   const createAd = async (ad) => {
     try {
-      const id = await postAds(ad);
-      console.log('id', id);
+      await postAds(ad);
       const res = await getAds();
+      alert.show('Ad Successfully Saved!', { type: 'success' });
       updateAds(res);
       // TODO: success message, send back to home page
     } catch (error) {
+      alert.show('Something Went Wrong!', { type: 'error' });
       console.log(error);
     }
   };
