@@ -3,15 +3,18 @@ import { Switch, Route } from 'react-router-dom';
 import { AdDeck } from './AdDeck';
 import { CreateAdFormWrapper } from './CreateAdFormWrapper';
 import { useGetAds } from '../hooks/useGetAds';
+import SpinnerWrapper from './SpinnerWrapper';
 
 export const Home = () => {
-  const { ads, setAds } = useGetAds();
+  const { ads, setAds, isLoading } = useGetAds();
 
   const handleUpdateAds = (res) => {
     setAds(res);
   };
 
-  return (
+  return isLoading ? (
+    <SpinnerWrapper isLoading={isLoading} />
+  ) : (
     <Switch>
       <Route path="/" exact children={<AdDeck ads={ads} />} />
       <Route
