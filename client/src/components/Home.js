@@ -6,18 +6,19 @@ import { useGetAds } from '../hooks/useGetAds';
 import { AdDetails } from './AdDetails';
 
 export const Home = () => {
-  const ads = useGetAds();
+  const { ads, setAds } = useGetAds();
   const [ad, setAd] = useState({});
+
+  const handleUpdateAds = (res) => {
+    setAds(res);
+  };
 
   return (
     <Switch>
-      <Route
-        path="/" exact
-        children={<AdDeck ads={ads} setAd={setAd} />}
-      />
+      <Route path="/" exact children={<AdDeck ads={ads} setAd={setAd} />} />
       <Route
         path="/ads/create"
-        children={<CreateAdFormWrapper />}
+        children={<CreateAdFormWrapper updateAds={handleUpdateAds} />}
       />
       <Route
         path={`/ad/${ad.id}`}

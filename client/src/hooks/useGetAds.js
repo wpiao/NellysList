@@ -12,5 +12,8 @@ export const useGetAds = () => {
     fetchGetAds();
   }, []);
 
-  return ads;
+  return {
+    ads,
+    setAds,
+  };
 };
