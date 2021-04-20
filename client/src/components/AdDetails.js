@@ -22,7 +22,7 @@ export const AdDetails = ({ ad }) => {
               <Form.Control type="email" value={ad.email} disabled></Form.Control>
               <br />
               <Form.Label>Zip Code</Form.Label>
-              <Form.Control type="zipcode" value={ad.zipCode} disabled></Form.Control>
+              <Form.Control type="text" value={ad.zipCode} disabled></Form.Control>
             </Form.Group>
           </Form>
           <Button variant="primary" size="lg">Edit</Button>{' '}
