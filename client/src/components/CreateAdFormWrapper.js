@@ -2,9 +2,7 @@ import React from 'react';
 import { CreateAdForm } from './CreateAdForm';
 import { postAds, getAds } from '../api/apiUtils';
 
-export const CreateAdFormWrapper = (props) => {
-  const { updateAds } = props;
-
+export const CreateAdFormWrapper = ({ updateAds }) => {
   const createAd = async (ad) => {
     try {
       const id = await postAds(ad);
