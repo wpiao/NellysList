@@ -29,8 +29,7 @@ export const CreateAdForm = ({ id, handleSubmit }) => {
 
   const submit = (e) => {
     e.preventDefault();
-    handleSubmit(ad);
-    e.target.reset();
+    handleSubmit(ad, e);
   };
 
   return (
