@@ -28,7 +28,7 @@
             "description": "red jordans", // required
             "photo": "www.photourl.com/1.jpg",
             "condition": "old",
-            "email": "email@gmail.com",
+            "email": "email@gmail.com", // required
             "zipCode": "94591" // required
         }
     ]

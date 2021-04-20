@@ -1,5 +1,6 @@
 import { Card } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
+import './Ad.css';
 
 export const Ad = ({ ad, setAd }) => {
   let history = useHistory();
@@ -10,7 +11,7 @@ export const Ad = ({ ad, setAd }) => {
   }
   return (
     <>
-      <Card style={{ width: '18rem' }} onClick={handleClick} >
+      <Card style={{ width: '18rem' }} onClick={handleClick} className="Ad">
         <Card.Img variant="top" src={ad.photo} style={{ height: 300 }} />
         <Card.Body>
           <Card.Title style={{ textAlign: 'center' }}>{ad.title}</Card.Title>
