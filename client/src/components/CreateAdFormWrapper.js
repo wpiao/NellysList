@@ -8,7 +8,7 @@ export const CreateAdFormWrapper = ({ updateAds }) => {
   const [isLoading, setLoading] = useState(false);
   const alert = useAlert();
 
-  const createAd = async (ad) => {
+  const createAd = async (ad, e) => {
     setLoading(true);
     try {
       // POST ads
@@ -17,6 +17,7 @@ export const CreateAdFormWrapper = ({ updateAds }) => {
       const res = await getAds();
       // Success alert
       alert.show('Successfully Saved!', { type: 'success' });
+      e.target.reset();
       // Update parent ads state
       updateAds(res);
     } catch (error) {
