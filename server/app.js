@@ -7,6 +7,7 @@ const cors = require('cors');
 
 const adsRouter = require('./routes/ads');
 const adRouter = require('./routes/ad');
+const uploadRouter = require('./routes/upload');
 
 const app = express();
 
@@ -29,6 +30,7 @@ if (process.env.NODE_ENV === 'production') {
 const apiPrefix = '/api';
 app.use(apiPrefix + '/ads', adsRouter);
 app.use(apiPrefix + '/ad', adRouter);
+app.use(apiPrefix + '/upload', uploadRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
