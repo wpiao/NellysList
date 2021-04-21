@@ -1,8 +1,8 @@
-const superagent = require('superagent');
+import ajax from 'superagent';
 
 export const getAds = async () => {
   try {
-    const res = await superagent.get('/api/ads');
+    const res = await ajax.get('/api/ads');
     return res.body;
   } catch (err) {
     // will make a error component and render it when error happens
@@ -12,10 +12,7 @@ export const getAds = async () => {
 
 export const postAds = async (ad) => {
   try {
-    const res = await superagent
-      .post('/api/ads')
-      .send(ad)
-      .set('accept', 'json');
+    const res = await ajax.post('/api/ads').send(ad).set('accept', 'json');
     return res.body;
   } catch (err) {
     console.log(err);

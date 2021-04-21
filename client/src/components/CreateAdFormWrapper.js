@@ -1,39 +1,22 @@
 import React, { useState } from 'react';
 import { CreateAdForm } from './CreateAdForm';
-import { postAds, getAds } from '../api/apiUtils';
-import { useAlert } from 'react-alert';
-import SpinnerWrapper from './SpinnerWrapper';
+// import { useAlert } from 'react-alert';
+// import SpinnerWrapper from './SpinnerWrapper';
+import { useParams } from 'react-router-dom';
 
 export const CreateAdFormWrapper = ({ updateAds }) => {
-  const [isLoading, setLoading] = useState(false);
-  const alert = useAlert();
+  // const [isLoading, setLoading] = useState(false);
+  // const alert = useAlert();
 
-  const createAd = async (ad, e) => {
-    setLoading(true);
-    try {
-      // POST ads
-      await postAds(ad);
-      // GET ads
-      const res = await getAds();
-      // Success alert
-      alert.show('Successfully Saved!', { type: 'success' });
-      e.target.reset();
-      // Update parent ads state
-      updateAds(res);
-    } catch (error) {
-      // Error alert
-      alert.show('Something Went Wrong!', { type: 'error' });
-      console.log(error);
-    }
-    setLoading(false);
+  const updateAd = () => {
+    // TODO: PUT call to BE
   };
 
-  // TODO: Used for PUT /api/ad (useParams from react-router-dom)
-  const id = null;
+  const { id } = useParams();
   return (
     <>
-      <SpinnerWrapper isLoading={isLoading} />
-      <CreateAdForm id={id} handleSubmit={createAd} />
+      {/* <SpinnerWrapper isLoading={isLoading} /> */}
+      <CreateAdForm id={id} handleSubmit={updateAd} />
     </>
   );
 };

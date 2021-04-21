@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { AdDeck } from './AdDeck';
 import { CreateAdForm } from './CreateAdForm';
+import { CreateAdFormWrapper } from './CreateAdFormWrapper';
 import { useGetAds } from '../hooks/useGetAds';
 import SpinnerWrapper from './SpinnerWrapper';
 import { AdDetails } from './AdDetails';
@@ -41,7 +42,8 @@ export const Home = () => {
         path="/ads/create"
         children={<CreateAdForm handleSubmit={createAd} />}
       />
-      <Route path={`/ad/${ad.id}`} children={<AdDetails ad={ad} />} />
+      <Route path={'/ad/:id'} exact children={<AdDetails ad={ad} />} />
+      <Route path={'/ad/:id/edit'} exact children={<CreateAdFormWrapper />} />
     </Switch>
   );
 };

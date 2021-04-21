@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Col, Form, Button } from 'react-bootstrap';
 import { CONDITION } from './Condition';
 
@@ -21,6 +21,10 @@ const REGEX = {
 export const CreateAdForm = ({ id, handleSubmit }) => {
   const [ad, setAd] = useState({});
   const [validated, setValidated] = useState(false);
+
+  useEffect(() => {
+    // TODO: if there is an ID, find ad by ID, then setAd with ad
+  }, []);
 
   const handleOnChange = (e, adKey) => {
     const value =
@@ -51,6 +55,7 @@ export const CreateAdForm = ({ id, handleSubmit }) => {
                 type="text"
                 placeholder="Enter Title"
                 onChange={(e) => handleOnChange(e, AD_INPUTS.TITLE)}
+                defaultValue={ad.title}
               />
               <Form.Control.Feedback type="invalid">
                 Please enter a title.
@@ -125,12 +130,8 @@ export const CreateAdForm = ({ id, handleSubmit }) => {
                 Please enter a zip code.
               </Form.Control.Feedback>
             </Form.Group>
-            <Button
-              variant="primary"
-              type="submit"
-              value={id ? 'Save Ad' : 'Create Ad'}
-            >
-              Create
+            <Button variant="primary" type="submit">
+              {id ? 'Update' : 'Create'}
             </Button>
           </Col>
         </Form.Row>
