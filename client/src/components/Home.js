@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { AdDeck } from './AdDeck';
-import { CreateAdForm } from './CreateAdForm';
+import { CreateAdForm2 } from './CreateAdForm2';
 import { CreateAdFormWrapper } from './CreateAdFormWrapper';
 import { useGetAds } from '../hooks/useGetAds';
 import SpinnerWrapper from './SpinnerWrapper';
 import { AdDetails } from './AdDetails';
 import { useAlert } from 'react-alert';
-import { postAds, getAds } from '../api/apiUtils';
+import { postAds, getAds, uploadImage } from '../api/apiUtils';
 
 export const Home = () => {
   const { ads, setAds, isLoading } = useGetAds();
@@ -15,6 +15,8 @@ export const Home = () => {
   const alert = useAlert();
 
   const createAd = async (ad, e) => {
+    let imageUrl = null;
+    // imageUrl = await uploadImage();
     // FIX THIS: setLoading(true);
     try {
       // POST ads
@@ -40,7 +42,7 @@ export const Home = () => {
       <Route path="/" exact children={<AdDeck ads={ads} setAd={setAd} />} />
       <Route
         path="/ads/create"
-        children={<CreateAdForm handleSubmit={createAd} />}
+        children={<CreateAdForm2 handleSubmit={createAd} />}
       />
       <Route path={'/ad/:id'} exact children={<AdDetails ad={ad} />} />
       <Route path={'/ad/:id/edit'} exact children={<CreateAdFormWrapper />} />
