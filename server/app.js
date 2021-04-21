@@ -11,9 +11,12 @@ const uploadRouter = require('./routes/upload');
 
 const app = express();
 
+// allow server to parse body data. increase limit for larger image sizes
+app.use(express.json({ limit: '50mb' }));
+// allow server to accept data from forms
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
+
 app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(cors());
 
