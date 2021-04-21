@@ -5,11 +5,13 @@
 Installation is done using the yarn command
 
 1. `yarn`
-2. `cd client && yarn`
-3. `cd ../server && yarn`
+2. `yarn client-install`
+3. `yarn server-install`
 
 ## Run Instructions
 
-- Run both client and server using `yarn dev` command from root folder
+- Run both client and server using `yarn dev`
+- Run only client using `yarn client`
+- Run only server using `yarn server`
 - Client - localhost:3000
 - Server - localhost:5001

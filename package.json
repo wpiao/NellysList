@@ -4,8 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently \"cd server && yarn dev\" \"cd client && yarn start\" ",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "client-install": "yarn --cwd client",
+    "client-build": "yarn --cwd client build",
+    "server-install": "yarn --cwd server",
+    "start": "yarn --cwd server start",
+    "server": "yarn --cwd server dev",
+    "client": "yarn --cwd client start",
+    "dev": "concurrently \"yarn server\" \"yarn client\"",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false yarn client-install && yarn client-build && yarn server-install"
   },
   "repository": {
     "type": "git",
