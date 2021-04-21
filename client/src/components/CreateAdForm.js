@@ -29,9 +29,9 @@ export const CreateAdForm = ({ id, handleSubmit }) => {
   };
 
   const submit = (e) => {
+    e.preventDefault();
     const form = e.currentTarget;
     if (form.checkValidity() === false) {
-      e.preventDefault();
       e.stopPropagation();
     } else {
       handleSubmit(ad, e);
