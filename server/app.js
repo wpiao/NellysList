@@ -14,8 +14,17 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
+
+// Serve static assets if in production
+if (process.env.NODE_ENV === 'production') {
+  // Set static folder
+  app.use(express.static('../client/build'));
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve('../client', 'build', 'index.html'));
+  });
+}
 
 const apiPrefix = '/api';
 app.use(apiPrefix + '/ads', adsRouter);
