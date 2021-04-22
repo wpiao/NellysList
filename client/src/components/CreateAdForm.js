@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Col, Form, Button } from 'react-bootstrap';
+import { Container, Col, Form, Button, Figure } from 'react-bootstrap';
 import { CONDITION } from './Condition';
+import { Upload } from './Upload';
 
 const AD_INPUTS = {
   ID: 'id',
@@ -14,20 +15,29 @@ const AD_INPUTS = {
 };
 
 const REGEX = {
-  PHOTO: '^(https?:\\/\\/.*\\.(?:jpg|jpeg|gif|png))$',
   ZIP_CODE: '(^\\d{5}$)|(^\\d{9}$)|(^\\d{5}-\\d{4}$)',
 };
 
 export const CreateAdForm = ({ id, handleSubmit, currentAd }) => {
   const [ad, setAd] = useState({});
   const [validated, setValidated] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [previewSource, setPreviewSource] = useState(null);
+
+  const handleSelectedFile = (file) => {
+    setSelectedFile(file);
+  };
+
+  const handlePreviewSource = (previewSource) => {
+    setPreviewSource(previewSource);
+  };
 
   useEffect(() => {
     // TODO: if there is an ID, find ad by ID, then setAd with ad
     if (id) {
       setAd(currentAd);
     }
-  }, []);
+  }, [id, currentAd]);
 
   const handleOnChange = (e, adKey) => {
     const value =
@@ -41,7 +51,7 @@ export const CreateAdForm = ({ id, handleSubmit, currentAd }) => {
     if (form.checkValidity() === false) {
       e.stopPropagation();
     } else {
-      handleSubmit(ad, e);
+      handleSubmit(ad, previewSource);
     }
     setValidated(true);
   };
@@ -50,7 +60,27 @@ export const CreateAdForm = ({ id, handleSubmit, currentAd }) => {
     <Container>
       <Form onSubmit={submit} noValidate validated={validated}>
         <Form.Row>
-          <Col xs={6}>
+          <Col xs={4}>
+            {previewSource ? (
+              <Container className="p-0">
+                <img
+                  src={previewSource}
+                  alt="preview"
+                  style={{ width: '100%', height: 'auto' }}
+                />
+              </Container>
+            ) : (
+              <Figure>
+                <Figure.Image
+                  width={350}
+                  height={350}
+                  alt="350x350"
+                  src="https://via.placeholder.com/350"
+                />
+              </Figure>
+            )}
+          </Col>
+          <Col xs={4}>
             <Form.Group controlId={AD_INPUTS.TITLE} className="required">
               <Form.Label>Title</Form.Label>
               <Form.Control
@@ -101,17 +131,15 @@ export const CreateAdForm = ({ id, handleSubmit, currentAd }) => {
               </Form.Control>
             </Form.Group>
             <Form.Group controlId={AD_INPUTS.PHOTO}>
-              <Form.Label>Photo URL</Form.Label>
-              <Form.Control
-                pattern={REGEX.PHOTO}
-                type="text"
-                placeholder="http://"
-                onChange={(e) => handleOnChange(e, AD_INPUTS.PHOTO)}
-                defaultValue={ad.photo}
+              <Form.Label>Photo Upload</Form.Label>
+              <Upload
+                selectedFile={selectedFile}
+                setSelectedFile={handleSelectedFile}
+                setPreviewSource={handlePreviewSource}
               />
             </Form.Group>
           </Col>
-          <Col xs={6}>
+          <Col xs={4}>
             <Form.Group controlId={AD_INPUTS.EMAIL} className="required">
               <Form.Label>Email</Form.Label>
               <Form.Control

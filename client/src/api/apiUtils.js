@@ -26,4 +26,19 @@ export const putAds = async (ad) => {
   } catch (err) {
     console.log(err);
   }
-}
+};
+
+export const postUpload = async (base64encodedImage) => {
+  let imageUrl = null;
+  try {
+    const res = await ajax
+      .post('/api/upload')
+      .send({ data: base64encodedImage })
+      .set('accept', 'json');
+    console.log('res', res);
+    imageUrl = res?.body?.data;
+  } catch (error) {
+    console.error(error);
+  }
+  return imageUrl;
+};
