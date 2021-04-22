@@ -12,7 +12,7 @@
     "client-build": "yarn --cwd client build",
     "server-install": "yarn --cwd server",
     "start": "yarn --cwd server start",
-    "server": "yarn --cwd server dev",
+    "server": "yarn --cwd server start",
     "client": "yarn --cwd client start",
     "dev": "concurrently \"yarn server\" \"yarn client\"",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false yarn client-install && yarn client-build && yarn server-install"
