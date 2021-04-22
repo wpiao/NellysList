@@ -7,7 +7,7 @@ import { useGetAds } from '../hooks/useGetAds';
 import SpinnerWrapper from './SpinnerWrapper';
 import { AdDetails } from './AdDetails';
 import { useAlert } from 'react-alert';
-import { postAds, getAds } from '../api/apiUtils';
+import { postAds, getAds, postUpload } from '../api/apiUtils';
 
 export const Home = () => {
   const { ads, setAds, isLoading } = useGetAds();
@@ -15,7 +15,10 @@ export const Home = () => {
   const [currentAd, setCurrentAd] = useState({});
   const alert = useAlert();
 
-  const createAd = async (ad, e) => {
+  const createAd = async (ad, base64encodedImage) => {
+    // First, attempt to upload image
+    const imageUrl = await postUpload(base64encodedImage);
+    ad.photo = imageUrl ? imageUrl : null;
     // FIX THIS: setLoading(true);
     try {
       // POST ads
@@ -24,7 +27,6 @@ export const Home = () => {
       const res = await getAds();
       // Success alert
       alert.show('Successfully Saved!', { type: 'success' });
-      e.target.reset();
       setAds(res);
     } catch (error) {
       // Error alert
@@ -32,6 +34,10 @@ export const Home = () => {
       console.log(error);
     }
     // FIX THIS: setLoading(false);
+  };
+
+  const handleUpdateAds = (ads) => {
+    setAds(ads);
   };
 
   return isLoading ? (
@@ -43,8 +49,21 @@ export const Home = () => {
         path="/ads/create"
         children={<CreateAdForm handleSubmit={createAd} />}
       />
-      <Route path="/ad/:id" exact children={<AdDetails ad={ad} setCurrentAd={setCurrentAd} />} />
-      <Route path="/ad/:id/edit" exact children={<CreateAdFormWrapper currentAd={currentAd} />} />
+      <Route
+        path="/ad/:id"
+        exact
+        children={<AdDetails ad={ad} setCurrentAd={setCurrentAd} />}
+      />
+      <Route
+        path="/ad/:id/edit"
+        exact
+        children={
+          <CreateAdFormWrapper
+            currentAd={currentAd}
+            updateAds={handleUpdateAds}
+          />
+        }
+      />
     </Switch>
   );
 };
