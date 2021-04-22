@@ -36,6 +36,7 @@ export const CreateAdForm = ({ id, handleSubmit, currentAd }) => {
     // TODO: if there is an ID, find ad by ID, then setAd with ad
     if (id) {
       setAd(currentAd);
+      setPreviewSource(currentAd.photo);
     }
   }, [id, currentAd]);
 
@@ -51,7 +52,7 @@ export const CreateAdForm = ({ id, handleSubmit, currentAd }) => {
     if (form.checkValidity() === false) {
       e.stopPropagation();
     } else {
-      handleSubmit(ad, previewSource);
+      handleSubmit(ad, previewSource, selectedFile);
     }
     setValidated(true);
   };
