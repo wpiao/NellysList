@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Col, Form, Button, Figure } from 'react-bootstrap';
 import { CONDITION } from './Condition';
 import { Upload } from './Upload';
+import SpinnerWrapper from './SpinnerWrapper';
 
 const AD_INPUTS = {
   ID: 'id',
@@ -18,7 +19,12 @@ const REGEX = {
   ZIP_CODE: '(^\\d{5}$)|(^\\d{9}$)|(^\\d{5}-\\d{4}$)',
 };
 
-export const CreateAdForm = ({ id, handleSubmit, currentAd }) => {
+export const CreateAdForm = ({
+  id,
+  handleSubmit,
+  currentAd,
+  isLoadingPOST,
+}) => {
   const [ad, setAd] = useState({});
   const [validated, setValidated] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -59,6 +65,7 @@ export const CreateAdForm = ({ id, handleSubmit, currentAd }) => {
 
   return (
     <Container>
+      <SpinnerWrapper isLoading={isLoadingPOST} />
       <Form onSubmit={submit} noValidate validated={validated}>
         <Form.Row>
           <Col xs={4}>
