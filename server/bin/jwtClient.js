@@ -1,8 +1,15 @@
 const { google } = require('googleapis');
+const { Base64 } = require('js-base64');
+const utf8 = require('utf8');
+const credentials = process.env.CREDENTIALS;
+const bytes = Base64.decode(credentials);
+const text = utf8.decode(bytes);
+const final_credentials = JSON.parse(text);
+
 const jwtClient = new google.auth.JWT(
-  process.env.CLIENT_EMAIL,
+  final_credentials.client_email,
   null,
-  process.env.PRIVATE_KEY,
+  final_credentials.private_key,
   ['https://www.googleapis.com/auth/spreadsheets']
 );
 
