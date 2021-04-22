@@ -18,14 +18,14 @@ app.use(cookieParser());
 app.use(cors());
 
 // Serve static assets if in production
-if (process.env.NODE_ENV === 'production') {
-  // Set static folder
-  app.use(express.static('../client/build'));
+// if (process.env.NODE_ENV === 'production') {
+//   // Set static folder
+//   app.use(express.static('../client/build'));
 
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve('../client', 'build', 'index.html'));
-  });
-}
+//   app.get('*', (req, res) => {
+//     res.sendFile(path.resolve('../client', 'build', 'index.html'));
+//   });
+// }
 
 const apiPrefix = '/api';
 app.use(apiPrefix + '/ads', adsRouter);
