@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Container, Col, Card, Form, Button, Row } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import { deleteAd, getAds } from '../api/apiUtils';
 import { useAlert } from 'react-alert';
+import SpinnerWrapper from './SpinnerWrapper';
 
 export const AdDetails = ({ ad, setCurrentAd, updateAds }) => {
+  const [isLoadingDELETE, setLoadingDELETE] = useState(false);
   const history = useHistory();
   const alert = useAlert();
 
@@ -14,6 +16,7 @@ export const AdDetails = ({ ad, setCurrentAd, updateAds }) => {
   };
 
   const handleDelete = async () => {
+    setLoadingDELETE(true);
     try {
       await deleteAd(ad.id);
       const res = await getAds();
@@ -23,10 +26,13 @@ export const AdDetails = ({ ad, setCurrentAd, updateAds }) => {
       alert.show('Something Went Wrong!', { type: 'error' });
       console.log(error);
     }
-  }
+    setLoadingDELETE(false);
+    history.push('/');
+  };
 
   return (
     <Container>
+      <SpinnerWrapper isLoading={isLoadingDELETE} />
       <Row>
         <Col xs={6}>
           <Card style={{ width: 300, margin: 'auto' }}>

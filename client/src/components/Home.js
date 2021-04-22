@@ -14,12 +14,17 @@ export const Home = () => {
   const [ad, setAd] = useState({});
   const [currentAd, setCurrentAd] = useState({});
   const alert = useAlert();
+  const [isLoadingPOST, setLoadingPOST] = useState(false);
 
-  const createAd = async (ad, base64encodedImage) => {
-    // First, attempt to upload image
-    const imageUrl = await postUpload(base64encodedImage);
-    ad.photo = imageUrl ? imageUrl : null;
-    // FIX THIS: setLoading(true);
+  const createAd = async (ad, base64encodedImage, selectedFile) => {
+    setLoadingPOST(true);
+
+    if (selectedFile) {
+      // First, attempt to upload image
+      const imageUrl = await postUpload(base64encodedImage);
+      ad.photo = imageUrl ? imageUrl : null;
+    }
+
     try {
       // POST ads
       await postAds(ad);
@@ -33,7 +38,7 @@ export const Home = () => {
       alert.show('Something Went Wrong!', { type: 'error' });
       console.log(error);
     }
-    // FIX THIS: setLoading(false);
+    setLoadingPOST(false);
   };
 
   const handleUpdateAds = (ads) => {
@@ -47,7 +52,9 @@ export const Home = () => {
       <Route path="/" exact children={<AdDeck ads={ads} setAd={setAd} />} />
       <Route
         path="/ads/create"
-        children={<CreateAdForm handleSubmit={createAd} />}
+        children={
+          <CreateAdForm handleSubmit={createAd} isLoadingPOST={isLoadingPOST} />
+        }
       />
       <Route
         path="/ad/:id"
@@ -57,7 +64,8 @@ export const Home = () => {
             ad={ad}
             setCurrentAd={setCurrentAd}
             updateAds={handleUpdateAds}
-          />}
+          />
+        }
       />
       <Route
         path="/ad/:id/edit"
