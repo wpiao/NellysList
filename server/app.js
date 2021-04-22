@@ -27,6 +27,16 @@ app.use(apiPrefix + '/ads', adsRouter);
 app.use(apiPrefix + '/ad', adRouter);
 app.use(apiPrefix + '/upload', uploadRouter);
 
+
+if (process.env.NODE_ENV === 'production') {
+  // Set static folder
+  app.use(express.static('../client/build'));
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve('../client', 'build', 'index.html'));
+  });
+}
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
@@ -40,14 +50,5 @@ app.use(function (err, req, res, next) {
 
   res.status(err.status || 500).json({ msg: err.message });
 });
-
-if (process.env.NODE_ENV === 'production') {
-  // Set static folder
-  app.use(express.static('../client/build'));
-
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve('../client', 'build', 'index.html'));
-  });
-}
 
 module.exports = app;
