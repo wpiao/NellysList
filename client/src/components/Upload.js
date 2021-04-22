@@ -2,6 +2,9 @@ import ajax from 'superagent';
 import React from 'react';
 import { Form } from 'react-bootstrap';
 
+// any single character or more followed by valid file ext
+const PHOTO_REGEX = '.+\\.(?:jpg|jpeg|gif|png)$';
+
 export const Upload = ({
   selectedFile,
   previewSource,
@@ -48,10 +51,20 @@ export const Upload = ({
     }
   };
 
+  const isInvalidFileType = () => {
+    if (selectedFile) {
+      return !selectedFile.match(PHOTO_REGEX);
+    }
+    return false;
+  };
+
   return (
     <Form.File id="file-upload" custom>
       <Form.File.Input onChange={handleFileChange} />
       <Form.File.Label data-browse="Browse">{selectedFile}</Form.File.Label>
+      <Form.Control.Feedback type="invalid">
+        Must be a valid image file (jpg,jpeg,gif,png)
+      </Form.Control.Feedback>
     </Form.File>
   );
 };

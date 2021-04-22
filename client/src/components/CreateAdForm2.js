@@ -22,8 +22,8 @@ const REGEX = {
 export const CreateAdForm2 = ({ id, handleSubmit }) => {
   const [ad, setAd] = useState({});
   const [validated, setValidated] = useState(false);
-  const [selectedFile, setSelectedFile] = useState('');
-  const [previewSource, setPreviewSource] = useState('');
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [previewSource, setPreviewSource] = useState(null);
 
   const handleSelectedFile = (file) => {
     setSelectedFile(file);
@@ -45,7 +45,7 @@ export const CreateAdForm2 = ({ id, handleSubmit }) => {
     if (form.checkValidity() === false) {
       e.stopPropagation();
     } else {
-      handleSubmit(ad, e);
+      handleSubmit(ad, previewSource);
     }
     setValidated(true);
   };

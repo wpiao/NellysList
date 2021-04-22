@@ -7,16 +7,28 @@ import { useGetAds } from '../hooks/useGetAds';
 import SpinnerWrapper from './SpinnerWrapper';
 import { AdDetails } from './AdDetails';
 import { useAlert } from 'react-alert';
-import { postAds, getAds, uploadImage } from '../api/apiUtils';
+import { postAds, getAds, postUpload } from '../api/apiUtils';
 
 export const Home = () => {
   const { ads, setAds, isLoading } = useGetAds();
   const [ad, setAd] = useState({});
   const alert = useAlert();
 
-  const createAd = async (ad, e) => {
+  const uploadImage = async (base64encodedImage) => {
     let imageUrl = null;
-    // imageUrl = await uploadImage();
+    try {
+      const uploadResponse = await postUpload(base64encodedImage);
+      imageUrl = uploadResponse?.data;
+    } catch (error) {
+      console.log(error);
+    }
+    return imageUrl;
+  };
+
+  const createAd = async (ad, base64encodedImage) => {
+    // First, attempt to upload image
+    const imageUrl = await uploadImage(base64encodedImage);
+    ad.photo = imageUrl ? imageUrl : null;
     // FIX THIS: setLoading(true);
     try {
       // POST ads
@@ -25,7 +37,6 @@ export const Home = () => {
       const res = await getAds();
       // Success alert
       alert.show('Successfully Saved!', { type: 'success' });
-      e.target.reset();
       setAds(res);
     } catch (error) {
       // Error alert

@@ -8,8 +8,12 @@ router.post('/', async (req, res) => {
     const uploadResponse = await cloudinary.uploader.upload(fileStr, {
       upload_preset: 'nellys_list',
     });
-    console.log(uploadResponse);
-    res.status(200).json({ message: 'success' });
+    res
+      .status(201)
+      .json({
+        message: 'Image Successfully Uploaded',
+        data: uploadResponse.url,
+      });
   } catch (err) {
     console.error(err);
     res.status(500).json({ err: 'Something went wrong' });
