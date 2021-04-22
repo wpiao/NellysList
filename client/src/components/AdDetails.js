@@ -1,14 +1,29 @@
 import React from 'react';
 import { Container, Col, Card, Form, Button, Row } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
+import { deleteAd, getAds } from '../api/apiUtils';
+import { useAlert } from 'react-alert';
 
-export const AdDetails = ({ ad, setCurrentAd }) => {
+export const AdDetails = ({ ad, setCurrentAd, updateAds }) => {
   const history = useHistory();
+  const alert = useAlert();
 
   const handleEdit = () => {
     history.push(`/ad/${ad.id}/edit`);
     setCurrentAd(ad);
   };
+
+  const handleDelete = async () => {
+    try {
+      await deleteAd(ad.id);
+      const res = await getAds();
+      alert.show('Successfully Deleted!', { type: 'success' });
+      updateAds(res);
+    } catch (error) {
+      alert.show('Something Went Wrong!', { type: 'error' });
+      console.log(error);
+    }
+  }
 
   return (
     <Container>
@@ -55,7 +70,7 @@ export const AdDetails = ({ ad, setCurrentAd }) => {
           >
             Edit
           </Button>
-          <Button variant="danger" size="lg">
+          <Button variant="danger" size="lg" onClick={handleDelete}>
             Delete
           </Button>
         </Col>

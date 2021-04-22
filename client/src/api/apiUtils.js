@@ -42,3 +42,12 @@ export const postUpload = async (base64encodedImage) => {
   }
   return imageUrl;
 };
+
+export const deleteAd = async (id) => {
+  try {
+    await ajax
+      .delete('/api/ads').query({ id: id })
+  } catch (err) {
+    console.log(err);
+  }
+};
