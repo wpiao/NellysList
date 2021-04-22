@@ -15,3 +15,12 @@ Installation is done using the yarn command
 - Run only server using `yarn server`
 - Client - localhost:3000
 - Server - localhost:5001
+
+## Deploy Instructions
+
+- https://devcenter.heroku.com/articles/git
+- Install Heroku CLI
+- `heroku create`
+- `heroku git:remote -a thawing-inlet-61413` replace thawing-inlet-61413 with your app name in Heroku
+- `git push heroku master`
+- Visit `thawing-inlet-61413.herokuapp.com`
