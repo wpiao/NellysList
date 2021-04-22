@@ -9,7 +9,7 @@ export const useGetAds = () => {
     const fetchGetAds = async () => {
       setLoading(true);
       const res = await getAds();
-      setAds(res);
+      if (res) setAds(res);
       setLoading(false);
     };
     fetchGetAds();
