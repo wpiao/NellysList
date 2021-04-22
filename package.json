@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "yarn": "1.x",
+    "node": "14.x"
+  },
   "scripts": {
     "client-install": "yarn --cwd client",
     "client-build": "yarn --cwd client build",
