@@ -52,7 +52,12 @@ export const Home = () => {
       <Route
         path="/ad/:id"
         exact
-        children={<AdDetails ad={ad} setCurrentAd={setCurrentAd} />}
+        children={
+          <AdDetails
+            ad={ad}
+            setCurrentAd={setCurrentAd}
+            updateAds={handleUpdateAds}
+          />}
       />
       <Route
         path="/ad/:id/edit"
