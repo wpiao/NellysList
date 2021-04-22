@@ -18,12 +18,15 @@ const REGEX = {
   ZIP_CODE: '(^\\d{5}$)|(^\\d{9}$)|(^\\d{5}-\\d{4}$)',
 };
 
-export const CreateAdForm = ({ id, handleSubmit }) => {
+export const CreateAdForm = ({ id, handleSubmit, currentAd }) => {
   const [ad, setAd] = useState({});
   const [validated, setValidated] = useState(false);
 
   useEffect(() => {
     // TODO: if there is an ID, find ad by ID, then setAd with ad
+    if (id) {
+      setAd(currentAd);
+    }
   }, []);
 
   const handleOnChange = (e, adKey) => {
@@ -69,6 +72,7 @@ export const CreateAdForm = ({ id, handleSubmit }) => {
                 rows={3}
                 placeholder="Enter Description"
                 onChange={(e) => handleOnChange(e, AD_INPUTS.DESCRIPTION)}
+                defaultValue={ad.description}
               />
               <Form.Control.Feedback type="invalid">
                 Please enter a description.
@@ -81,6 +85,7 @@ export const CreateAdForm = ({ id, handleSubmit }) => {
                 placeholder="Enter Price"
                 onChange={(e) => handleOnChange(e, AD_INPUTS.PRICE)}
                 onKeyPress={(e) => e.charCode === 46 && e.preventDefault()}
+                defaultValue={ad.price}
               />
             </Form.Group>
             <Form.Group controlId={AD_INPUTS.CONDITION}>
@@ -89,6 +94,7 @@ export const CreateAdForm = ({ id, handleSubmit }) => {
                 as="select"
                 custom
                 onChange={(e) => handleOnChange(e, AD_INPUTS.CONDITION)}
+                defaultValue={ad.condition}
               >
                 <option>{CONDITION.OLD}</option>
                 <option>{CONDITION.NEW}</option>
@@ -101,6 +107,7 @@ export const CreateAdForm = ({ id, handleSubmit }) => {
                 type="text"
                 placeholder="http://"
                 onChange={(e) => handleOnChange(e, AD_INPUTS.PHOTO)}
+                defaultValue={ad.photo}
               />
             </Form.Group>
           </Col>
@@ -112,6 +119,7 @@ export const CreateAdForm = ({ id, handleSubmit }) => {
                 type="email"
                 placeholder="Enter Email"
                 onChange={(e) => handleOnChange(e, AD_INPUTS.EMAIL)}
+                defaultValue={ad.email}
               />
               <Form.Control.Feedback type="invalid">
                 Please enter a valid email.
@@ -125,6 +133,7 @@ export const CreateAdForm = ({ id, handleSubmit }) => {
                 type="text"
                 placeholder="Enter Zip Code"
                 onChange={(e) => handleOnChange(e, AD_INPUTS.ZIP_CODE)}
+                defaultValue={ad.zipCode}
               />
               <Form.Control.Feedback type="invalid">
                 Please enter a zip code.

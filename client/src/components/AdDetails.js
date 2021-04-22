@@ -2,11 +2,12 @@ import React from 'react';
 import { Container, Col, Card, Form, Button, Row } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 
-export const AdDetails = ({ ad }) => {
+export const AdDetails = ({ ad, setCurrentAd }) => {
   const history = useHistory();
 
   const handleEdit = () => {
     history.push(`/ad/${ad.id}/edit`);
+    setCurrentAd(ad);
   };
 
   return (
