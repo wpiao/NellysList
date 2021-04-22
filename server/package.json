@@ -15,9 +15,11 @@
     "express": "~4.16.1",
     "googleapis": "~71.0.0",
     "http-errors": "~1.6.3",
+    "js-base64": "^3.6.0",
     "moment": "^2.29.1",
     "morgan": "~1.9.1",
     "request": "^2.88.2",
+    "utf8": "^3.0.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

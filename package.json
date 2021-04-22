@@ -24,10 +24,7 @@
     "url": "https://github.com/wpiao/NellysList/issues"
   },
   "homepage": "https://github.com/wpiao/NellysList#readme",
-  "dependencies": {
-    "js-base64": "^3.6.0",
-    "utf8": "^3.0.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "concurrently": "^6.0.2"
   }
