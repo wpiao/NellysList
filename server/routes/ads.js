@@ -13,10 +13,12 @@ router.get('/', async (req, res, next) => {
   let id = req.query.id;
   const processData = async (data) => {
     return data.map((ad) => {
+      // remove all non decimal / digits and convert to number
+      const price = ad[2] ? Number(ad[2].replace(/[^0-9.-]+/g, '')) : null;
       return {
         id: ad[0],
         title: ad[1],
-        price: ad[2],
+        price: price,
         description: ad[3],
         photo: ad[4],
         condition: ad[5],
@@ -92,7 +94,7 @@ router.delete('/', async (req, res, next) => {
     });
     res.status(204).json();
   } else {
-    res.status(404).json({"error": "ID not found."})
+    res.status(404).json({ error: 'ID not found.' });
   }
 });
 
