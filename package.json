@@ -7,7 +7,7 @@
     "client-install": "yarn --cwd client",
     "client-build": "yarn --cwd client build",
     "server-install": "yarn --cwd server",
-    "start": "yarn --cwd server start",
+    "start": "concurrently \"yarn server\" \"yarn client\"",
     "server": "yarn --cwd server dev",
     "client": "yarn --cwd client start",
     "dev": "concurrently \"yarn server\" \"yarn client\"",
