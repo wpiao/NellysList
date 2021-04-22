@@ -10,9 +10,8 @@ export const CreateAdFormWrapper = ({ currentAd, updateAds }) => {
   const alert = useAlert();
   const { id } = useParams();
 
-  const updateAd = async (ad, base64encodedImage) => {
-    // TODO: Check if existing photo is different request
-    if (ad.photo) {
+  const updateAd = async (ad, base64encodedImage, selectedFile) => {
+    if (ad.photo && selectedFile !== null) {
       const imageUrl = await postUpload(base64encodedImage);
       ad.photo = imageUrl ? imageUrl : null;
     }
