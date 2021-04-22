@@ -1,14 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { CreateAdForm } from './CreateAdForm';
 import { getAds, putAds, postUpload } from '../api/apiUtils';
 import { useAlert } from 'react-alert';
 // import SpinnerWrapper from './SpinnerWrapper';
-import { useParams } from 'react-router-dom';
-
+import { useParams, useHistory } from 'react-router-dom';
 export const CreateAdFormWrapper = ({ currentAd, updateAds }) => {
   // const [isLoading, setLoading] = useState(false);
   const alert = useAlert();
   const { id } = useParams();
+  const history = useHistory();
+
+  useEffect(() => {
+    if (Object.keys(currentAd).length === 0) {
+      history.push('/');
+    }
+  }, []);
 
   const updateAd = async (ad, base64encodedImage) => {
     // TODO: Check if existing photo is different request
