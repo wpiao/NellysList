@@ -21,6 +21,13 @@ app.use(cookieParser());
 app.use(cors());
 
 // Serve static assets if in production
+
+const apiPrefix = '/api';
+app.use(apiPrefix + '/ads', adsRouter);
+app.use(apiPrefix + '/ad', adRouter);
+app.use(apiPrefix + '/upload', uploadRouter);
+
+
 if (process.env.NODE_ENV === 'production') {
   // Set static folder
   app.use(express.static('../client/build'));
@@ -29,11 +36,6 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.resolve('../client', 'build', 'index.html'));
   });
 }
-
-const apiPrefix = '/api';
-app.use(apiPrefix + '/ads', adsRouter);
-app.use(apiPrefix + '/ad', adRouter);
-app.use(apiPrefix + '/upload', uploadRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
