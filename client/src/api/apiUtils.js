@@ -18,3 +18,12 @@ export const postAds = async (ad) => {
     console.log(err);
   }
 };
+
+export const putAds = async (ad) => {
+  try {
+    const res = await ajax.put('/api/ad').send(ad).set('accept', 'json');
+    return res.body;
+  } catch (err) {
+    console.log(err);
+  }
+}

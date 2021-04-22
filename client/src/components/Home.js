@@ -12,6 +12,7 @@ import { postAds, getAds } from '../api/apiUtils';
 export const Home = () => {
   const { ads, setAds, isLoading } = useGetAds();
   const [ad, setAd] = useState({});
+  const [currentAd, setCurrentAd] = useState({});
   const alert = useAlert();
 
   const createAd = async (ad, e) => {
@@ -42,8 +43,8 @@ export const Home = () => {
         path="/ads/create"
         children={<CreateAdForm handleSubmit={createAd} />}
       />
-      <Route path={'/ad/:id'} exact children={<AdDetails ad={ad} />} />
-      <Route path={'/ad/:id/edit'} exact children={<CreateAdFormWrapper />} />
+      <Route path="/ad/:id" exact children={<AdDetails ad={ad} setCurrentAd={setCurrentAd} />} />
+      <Route path="/ad/:id/edit" exact children={<CreateAdFormWrapper currentAd={currentAd} />} />
     </Switch>
   );
 };
