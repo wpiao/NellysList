@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Col, Card, Form, Button, Row } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import { deleteAd, getAds } from '../api/apiUtils';
@@ -9,6 +9,12 @@ export const AdDetails = ({ ad, setCurrentAd, updateAds }) => {
   const [isLoadingDELETE, setLoadingDELETE] = useState(false);
   const history = useHistory();
   const alert = useAlert();
+
+  useEffect(() => {
+    if (Object.keys(ad).length === 0) {
+      history.push('/');
+    }
+  }, [ad, history]);
 
   const handleEdit = () => {
     history.push(`/ad/${ad.id}/edit`);
@@ -35,8 +41,8 @@ export const AdDetails = ({ ad, setCurrentAd, updateAds }) => {
       <SpinnerWrapper isLoading={isLoadingDELETE} />
       <Row>
         <Col xs={6}>
-          <Card style={{ width: 300, margin: 'auto' }}>
-            <Card.Img variant="top" src={ad.photo} style={{ height: 300 }} />
+          <Card>
+            <Card.Img variant="top" src={ad.photo} />
             <Card.Body>
               <Card.Title style={{ textAlign: 'center' }}>
                 {ad.title} ({ad.condition})
