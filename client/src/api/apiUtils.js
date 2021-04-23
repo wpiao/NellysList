@@ -45,8 +45,19 @@ export const postUpload = async (base64encodedImage) => {
 
 export const deleteAd = async (id) => {
   try {
-    await ajax
-      .delete('/api/ads').query({ id: id })
+    await ajax.delete('/api/ads').query({ id: id });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getLatLngByZipCode = async (zipCode) => {
+  const baseUrl = 'https://maps.googleapis.com/maps/api/geocode/json';
+  const key = process.env.REACT_APP_GOOGLE_KEY;
+
+  try {
+    const res = await ajax.get(`${baseUrl}?address=${zipCode}&key=${key}`);
+    return res.body;
   } catch (err) {
     console.log(err);
   }
