@@ -8,13 +8,15 @@ import SpinnerWrapper from './SpinnerWrapper';
 import { AdDetails } from './AdDetails';
 import { useAlert } from 'react-alert';
 import { postAds, getAds, postUpload } from '../api/apiUtils';
+import { Search } from './Search';
 
 export const Home = () => {
-  const { ads, setAds, isLoading } = useGetAds();
+  const { ads, setAds, isLoading, searched, setSearched } = useGetAds();
   const [ad, setAd] = useState({});
   const [currentAd, setCurrentAd] = useState({});
   const alert = useAlert();
   const [isLoadingPOST, setLoadingPOST] = useState(false);
+  const [input, setInput] = useState('');
 
   const createAd = async (ad, base64encodedImage, selectedFile) => {
     setLoadingPOST(true);
@@ -45,11 +47,29 @@ export const Home = () => {
     setAds(ads);
   };
 
+  const handleSearchAds = (e) => {
+    const val = e.target.value;
+    const filtered = searched.filter((ad) => {
+      return ad.title.toLowerCase().includes(val.toLowerCase());
+    });
+    setInput(val);
+    setAds(filtered);
+  };
+
   return isLoading ? (
     <SpinnerWrapper isLoading={isLoading} />
   ) : (
     <Switch>
-      <Route path="/" exact children={<AdDeck ads={ads} setAd={setAd} />} />
+      <Route
+        path="/"
+        exact
+        children={
+          <>
+            <Search input={input} onHandleSearch={handleSearchAds} />
+            <AdDeck ads={ads} setAd={setAd} />
+          </>
+        }
+      />
       <Route
         path="/ads/create"
         children={
