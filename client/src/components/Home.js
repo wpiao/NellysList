@@ -8,6 +8,7 @@ import SpinnerWrapper from './SpinnerWrapper';
 import { AdDetails } from './AdDetails';
 import { useAlert } from 'react-alert';
 import { postAds, getAds, postUpload } from '../api/apiUtils';
+import { Search } from './Search';
 
 export const Home = () => {
   const { ads, setAds, isLoading } = useGetAds();
@@ -49,7 +50,14 @@ export const Home = () => {
     <SpinnerWrapper isLoading={isLoading} />
   ) : (
     <Switch>
-      <Route path="/" exact children={<AdDeck ads={ads} setAd={setAd} />} />
+      <Route
+        path="/" exact
+        children={
+          <>
+            <Search ads={ads} updateAds={handleUpdateAds} />
+            <AdDeck ads={ads} setAd={setAd} />
+          </>
+        } />
       <Route
         path="/ads/create"
         children={
