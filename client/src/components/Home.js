@@ -16,7 +16,7 @@ export const Home = () => {
   const [currentAd, setCurrentAd] = useState({});
   const alert = useAlert();
   const [isLoadingPOST, setLoadingPOST] = useState(false);
-  // const [searched, setSearched] = useState(ads);
+  const [input, setInput] = useState('');
 
   const createAd = async (ad, base64encodedImage, selectedFile) => {
     setLoadingPOST(true);
@@ -47,22 +47,29 @@ export const Home = () => {
     setAds(ads);
   };
 
-  const handleSearchAds = (ads) => {
-    setSearched(ads);
-  }
+  const handleSearchAds = (e) => {
+    const val = e.target.value;
+    const filtered = searched.filter((ad) => {
+      return ad.title.toLowerCase().includes(val.toLowerCase());
+    });
+    setInput(val);
+    setAds(filtered);
+  };
 
   return isLoading ? (
     <SpinnerWrapper isLoading={isLoading} />
   ) : (
     <Switch>
       <Route
-        path="/" exact
+        path="/"
+        exact
         children={
           <>
-            <Search ads={ads} searchAds={handleSearchAds} />
-            <AdDeck ads={searched} setAd={setAd} />
+            <Search input={input} onHandleSearch={handleSearchAds} />
+            <AdDeck ads={ads} setAd={setAd} />
           </>
-        } />
+        }
+      />
       <Route
         path="/ads/create"
         children={
