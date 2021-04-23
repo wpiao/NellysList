@@ -1,14 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Col, Card, Form, Button, Row } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
-import { deleteAd, getAds } from '../api/apiUtils';
+import { deleteAd, getAds, getLatLngByZipCode } from '../api/apiUtils';
 import { useAlert } from 'react-alert';
 import SpinnerWrapper from './SpinnerWrapper';
+import { Map } from './Map';
 
 export const AdDetails = ({ ad, setCurrentAd, updateAds }) => {
   const [isLoadingDELETE, setLoadingDELETE] = useState(false);
+  const [coordinates, setCoordinates] = useState(null);
   const history = useHistory();
   const alert = useAlert();
+
+  useEffect(() => {
+    const getMapData = async () => {
+      try {
+        const res = await getLatLngByZipCode(ad.zipCode);
+        if (res?.results?.length) {
+          setCoordinates({
+            lat: res.results[0]?.geometry?.location?.lat,
+            lng: res.results[0]?.geometry?.location?.lng,
+          });
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getMapData();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (Object.keys(ad).length === 0) {
@@ -37,7 +56,7 @@ export const AdDetails = ({ ad, setCurrentAd, updateAds }) => {
   };
 
   return (
-    <Container>
+    <Container className="mb-5">
       <SpinnerWrapper isLoading={isLoadingDELETE} />
       <Row>
         <Col xs={6}>
@@ -57,7 +76,12 @@ export const AdDetails = ({ ad, setCurrentAd, updateAds }) => {
           </Card>
         </Col>
         <Col xs={6}>
-          <Form>
+          {coordinates ? (
+            <Map coordinates={coordinates} />
+          ) : (
+            <div>No map data found</div>
+          )}
+          <Form className="mt-3">
             <Form.Group controlId="formBasicEmail">
               <Form.Label>Email</Form.Label>
               <Form.Control
