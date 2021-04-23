@@ -11,11 +11,12 @@ import { postAds, getAds, postUpload } from '../api/apiUtils';
 import { Search } from './Search';
 
 export const Home = () => {
-  const { ads, setAds, isLoading } = useGetAds();
+  const { ads, setAds, isLoading, searched, setSearched } = useGetAds();
   const [ad, setAd] = useState({});
   const [currentAd, setCurrentAd] = useState({});
   const alert = useAlert();
   const [isLoadingPOST, setLoadingPOST] = useState(false);
+  // const [searched, setSearched] = useState(ads);
 
   const createAd = async (ad, base64encodedImage, selectedFile) => {
     setLoadingPOST(true);
@@ -46,6 +47,10 @@ export const Home = () => {
     setAds(ads);
   };
 
+  const handleSearchAds = (ads) => {
+    setSearched(ads);
+  }
+
   return isLoading ? (
     <SpinnerWrapper isLoading={isLoading} />
   ) : (
@@ -54,8 +59,8 @@ export const Home = () => {
         path="/" exact
         children={
           <>
-            <Search ads={ads} updateAds={handleUpdateAds} />
-            <AdDeck ads={ads} setAd={setAd} />
+            <Search ads={ads} searchAds={handleSearchAds} />
+            <AdDeck ads={searched} setAd={setAd} />
           </>
         } />
       <Route
