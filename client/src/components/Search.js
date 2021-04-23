@@ -1,14 +1,13 @@
-import React, { useRef } from 'react';
-import { InputGroup, FormControl, Button } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { InputGroup, FormControl } from 'react-bootstrap';
 
-export const Search = ({ ads, updateAds }) => {
-  const textInput = useRef(null);
+export const Search = ({ ads, searchAds }) => {
+  const [input, setInput] = useState('');
 
-  const handleSearch = () => {
-    const userInput = textInput.current.value;
-    const result = ads.filter(ad => ad.title.toLowerCase().includes(userInput.toLowerCase()));
-    updateAds(result);
-    textInput.current.value = '';
+  const handleSearchOnChange = e => {
+    setInput(e.target.value);
+    const result = ads.filter(ad => ad.title.toLowerCase().match(input.toLowerCase()));
+    searchAds(result);
   };
 
   return (
@@ -18,11 +17,9 @@ export const Search = ({ ads, updateAds }) => {
           placeholder="Enter keyword"
           aria-label="search bar"
           aria-describedby="basic-addon2"
-          ref={textInput}
+          onChange={handleSearchOnChange}
+          value={input}
         />
-        <InputGroup.Append>
-          <Button variant="outline-secondary" onClick={handleSearch}>Search</Button>
-        </InputGroup.Append>
       </InputGroup>
     </>
   );
