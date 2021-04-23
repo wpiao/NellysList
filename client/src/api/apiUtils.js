@@ -1,4 +1,5 @@
 import ajax from 'superagent';
+require('dotenv').config();
 
 export const getAds = async () => {
   try {
