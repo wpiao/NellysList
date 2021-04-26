@@ -39,7 +39,7 @@ router.get('/', async (req, res, next) => {
   let result = await processData(getRes.data.values);
 
   if (!id) {
-    res.status(200).json({ data: result });
+    res.status(200).json({ data: { ads: result } });
   } else {
     result = result.filter((item) => {
       if (item.id === id) {
@@ -49,7 +49,7 @@ router.get('/', async (req, res, next) => {
     if (result.length === 0) {
       res.status(404).json('Ad not found. Please check your id.');
     } else {
-      res.status(200).json({ data: result });
+      res.status(200).json({ data: { ads: result } });
     }
   }
 });
