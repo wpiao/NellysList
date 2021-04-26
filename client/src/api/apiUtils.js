@@ -3,7 +3,7 @@ import ajax from 'superagent';
 export const getAds = async () => {
   try {
     const res = await ajax.get('/api/ads');
-    return res.body;
+    return res.body.data;
   } catch (err) {
     // will make a error component and render it when error happens
     console.log(err);
