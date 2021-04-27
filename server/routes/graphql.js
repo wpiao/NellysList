@@ -119,9 +119,48 @@ const RootQueryType = new GraphQLObjectType({
 });
 
 
+const RootMutationType = new GraphQLObjectType({
+  name: 'Mutation',
+  description: 'Root Mutation',
+  fields: () => ({
+    createAd: {
+      type: AdType,
+      description: 'Create an Ad',
+      args: {
+        title: { type: GraphQLNonNull(GraphQLString) },
+        price: { type: GraphQLInt },
+        description: { type: GraphQLNonNull(GraphQLString) },
+        photo: { type: GraphQLString },
+        condition: { type: GraphQLNonNull(GraphQLString) },
+        email: { type: GraphQLNonNull(GraphQLString) },
+        zipCode: { type: GraphQLNonNull(GraphQLString) },
+      },
+      resolve: (parent, args) => {
+        const now = moment.utc().format('YYYY-MM-DD HH:mm:ss');
+        const createdDate = now;
+        const modifiedDate = now;
+        const id = uuidv4();
+        const ad = {
+          id: id,
+          title: args.title,
+          description: args.description,
+          price: args.price,
+          photo: args.photo,
+          condition: args.condition,
+          email: args.email,
+          zipCode: args.zipCode,
+          modifiedDate: modifiedDate,
+          createdDate: createdDate,
+        };
+        ads.push(ad);
+        return ad;
+      },
+    },
+  }),
+});
 const schema = new GraphQLSchema({
   query: RootQueryType,
-  // mutation: RootMutationType,
+  mutation: RootMutationType,
 });
 
 router.use(
