@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { graphqlHTTP } = require('express-graphql');
+const { graphqlExpress, graphiqlExpress } = require('graphql-server-express');
 const {
   GraphQLSchema,
   GraphQLObjectType,
@@ -100,11 +101,11 @@ const RootQueryType = new GraphQLObjectType({
   name: 'Query',
   description: 'Root Query',
   fields: () => ({
-    book: {
+    ad: {
       type: AdType,
       description: 'A Single Ad',
       args: {
-        id: { type: GraphQLInt },
+        id: { type: GraphQLString },
       },
       resolve: (parent, args) => ads.find((ad) => ad.id === args.id),
     },
@@ -143,11 +144,20 @@ const schema = new GraphQLSchema({
   // mutation: RootMutationType,
 });
 
-router.post(
-  '/',
-  graphqlHTTP({
+// GraphQL endpoint for application use
+router.use(
+  '/graphql',
+  graphqlExpress({
     schema: schema,
-    graphiql: true,
+    debug: true,
+  })
+);
+
+// GraphIQL IDE for inputting queries
+router.use(
+  '/graphiql',
+  graphiqlExpress({
+    endpointURL: '/api/graphql',
   })
 );
 

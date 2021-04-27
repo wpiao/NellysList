@@ -27,7 +27,7 @@ const apiPrefix = '/api';
 app.use(apiPrefix + '/ads', adsRouter);
 app.use(apiPrefix + '/ad', adRouter);
 app.use(apiPrefix + '/upload', uploadRouter);
-app.use(apiPrefix + '/graphql', graphqlRouter);
+app.use(apiPrefix + '/', graphqlRouter);
 
 if (process.env.NODE_ENV === 'production') {
   // Set static folder
