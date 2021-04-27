@@ -4,10 +4,14 @@ import { AdsPage } from './AdsPage';
 import { useGetAdsV2 } from '../hooks/useGetAdsV2';
 
 export const V2Home = () => {
-  const { isLoading } = useGetAdsV2();
+  const { ads, isLoading } = useGetAdsV2();
   return (
     <Switch>
-      <Route path="/" exact children={<AdsPage isLoading={isLoading} />} />
+      <Route
+        path="/"
+        exact
+        children={<AdsPage ads={ads} isLoading={isLoading} />}
+      />
     </Switch>
   );
 };
