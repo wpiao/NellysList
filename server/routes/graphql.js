@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const { graphqlHTTP } = require('express-graphql');
-const { graphqlExpress, graphiqlExpress } = require('graphql-server-express');
 const {
   GraphQLSchema,
   GraphQLObjectType,
@@ -144,20 +143,12 @@ const schema = new GraphQLSchema({
   // mutation: RootMutationType,
 });
 
-// GraphQL endpoint for application use
 router.use(
   '/graphql',
-  graphqlExpress({
+  graphqlHTTP({
     schema: schema,
     debug: true,
-  })
-);
-
-// GraphIQL IDE for inputting queries
-router.use(
-  '/graphiql',
-  graphiqlExpress({
-    endpointURL: '/api/graphql',
+    graphiql: true
   })
 );
 
