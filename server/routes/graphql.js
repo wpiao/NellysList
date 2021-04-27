@@ -143,7 +143,7 @@ const schema = new GraphQLSchema({
   // mutation: RootMutationType,
 });
 
-router.post(
+router.use(
   '/',
   graphqlHTTP({
     schema: schema,
