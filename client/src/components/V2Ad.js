@@ -7,7 +7,6 @@ export const V2Ad = ({ ad }) => {
 
   const handleClick = () => {
     history.push(`/ad/${ad.id}`);
-    // setAd(ad);
   };
 
   return (
