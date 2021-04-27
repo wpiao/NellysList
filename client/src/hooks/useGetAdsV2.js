@@ -25,7 +25,6 @@ export const useGetAdsV2 = () => {
   const { loading, error, data } = useQuery(GET_ADS);
 
   useEffect(() => {
-    console.log(data);
     if (loading) {
       dispatch({ type: ACTIONS.LOAD_ADS });
     }
