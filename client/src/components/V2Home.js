@@ -6,9 +6,10 @@ import { V2CreateAdForm } from './V2CreateAdForm';
 import { ACTIONS } from '../contexts/AdsContext';
 import { postAds, getAds, postUpload } from '../api/apiUtils';
 import { useAlert } from 'react-alert';
+import { V2AdDetails } from './V2AdDetails';
 
 export const V2Home = () => {
-  const { ads, isLoading, dispatch } = useGetAdsV2();
+  const { ads, isLoadingAds, dispatch } = useGetAdsV2();
   const alert = useAlert();
 
   const createAd = async (ad, base64encodedImage, selectedFile) => {
@@ -41,14 +42,15 @@ export const V2Home = () => {
       <Route
         path="/"
         exact
-        children={<AdsPage ads={ads} isLoading={isLoading} />}
+        children={<AdsPage ads={ads} isLoadingAds={isLoadingAds} />}
       />
       <Route
         path="/ads/create"
         children={
-          <V2CreateAdForm isLoading={isLoading} handleSubmit={createAd} />
+          <V2CreateAdForm isLoading={isLoadingAds} handleSubmit={createAd} />
         }
       />
+      <Route path="/ad/:id" exact children={<V2AdDetails />} />
     </Switch>
   );
 };
