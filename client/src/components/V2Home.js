@@ -5,13 +5,15 @@ import { V2AdDeck } from './V2AdDeck';
 // import { CreateAdFormWrapper } from './CreateAdFormWrapper';
 // import { useGetAds } from '../hooks/useGetAds';
 import SpinnerWrapper from './SpinnerWrapper';
+import { useGetAdsV2 } from '../hooks/useGetAdsV2';
 // import { AdDetails } from './AdDetails';
 // import { useAlert } from 'react-alert';
 // import { postAds, getAds, postUpload } from '../api/apiUtils';
 // import { Search } from './Search';
 
 export const V2Home = () => {
-  const isLoading = false;
+  const { ads, isLoading } = useGetAdsV2();
+
   // const { ads, setAds, isLoading, searched, setSearched } = useGetAds();
   // const [ad, setAd] = useState({});
   // const [currentAd, setCurrentAd] = useState({});
@@ -66,8 +68,9 @@ export const V2Home = () => {
         exact
         children={
           <>
-            {/* <Search input={input} onHandleSearch={handleSearchAds} /> */}
-            <V2AdDeck />
+            {/* <Search input={input} onHandleSearch={handleSearchAds} />
+            <AdDeck ads={ads} setAd={setAd} /> */}
+            <V2AdDeck ads={ads} />
           </>
         }
       />

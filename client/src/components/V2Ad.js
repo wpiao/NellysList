@@ -2,12 +2,12 @@ import { Card } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import './Ad.css';
 
-export const V2Ad = ({ ad, setAd }) => {
+export const V2Ad = ({ ad }) => {
   let history = useHistory();
 
   const handleClick = () => {
     history.push(`/ad/${ad.id}`);
-    setAd(ad);
+    // setAd(ad);
   };
 
   return (
