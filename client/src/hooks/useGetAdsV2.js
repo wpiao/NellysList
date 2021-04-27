@@ -1,26 +1,44 @@
-import ajax from 'superagent';
 import { useEffect, useContext } from 'react';
 import { AdsContext, ACTIONS } from '../contexts/AdsContext';
+import { useQuery, gql } from '@apollo/client';
+
+const GET_ADS = gql`
+  query GetAds {
+    ads {
+      id
+      title
+      description
+      price
+      photo
+      condition
+      email
+      zipCode
+      modifiedDate
+      createdDate
+    }
+  }
+`;
 
 export const useGetAdsV2 = () => {
   const [adsState, dispatch] = useContext(AdsContext);
-  const { ads, searchedAds, isLoading, error } = adsState;
+  const { ads, searchedAds, isLoading } = adsState;
+  const { loading, error, data } = useQuery(GET_ADS);
 
   useEffect(() => {
-    const fetchGetAds = async () => {
+    console.log(data);
+    if (loading) {
       dispatch({ type: ACTIONS.LOAD_ADS });
-      try {
-        const res = await ajax.get('/api/ads');
-        dispatch({
-          type: ACTIONS.SET_INITIAL_ADS,
-          payload: { ads: res.body.data.ads || [] },
-        });
-      } catch (err) {
-        dispatch({ type: ACTIONS.ERROR, payload: { error: err } });
-      }
-    };
-    fetchGetAds();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    }
+    if (error) {
+      dispatch({ type: ACTIONS.ERROR, payload: { error: error } });
+    }
+    if (data) {
+      dispatch({
+        type: ACTIONS.SET_INITIAL_ADS,
+        payload: { ads: data.ads }
+      })
+    }
+  }, [data]);
 
   return { ads, searchedAds, isLoading, error };
 };
