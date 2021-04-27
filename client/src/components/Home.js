@@ -9,6 +9,13 @@ import { AdDetails } from './AdDetails';
 import { useAlert } from 'react-alert';
 import { postAds, getAds, postUpload } from '../api/apiUtils';
 import { Search } from './Search';
+import { useQuery, gql } from '@apollo/client';
+
+const GET_ADS = gql`
+  query GetAds {
+    message
+  }
+`;
 
 export const Home = () => {
   const { ads, setAds, isLoading, searched, setSearched } = useGetAds();
@@ -17,6 +24,7 @@ export const Home = () => {
   const alert = useAlert();
   const [isLoadingPOST, setLoadingPOST] = useState(false);
   const [input, setInput] = useState('');
+  const { loading, error, data } = useQuery(GET_ADS);
 
   const createAd = async (ad, base64encodedImage, selectedFile) => {
     setLoadingPOST(true);
