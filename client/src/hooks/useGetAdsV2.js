@@ -11,7 +11,10 @@ export const useGetAdsV2 = () => {
       dispatch({ type: ACTIONS.LOAD_ADS });
       try {
         const res = await ajax.get('/api/ads');
-        dispatch({ type: ACTIONS.SET_INITIAL_ADS, payload: { ads: res.body } });
+        dispatch({
+          type: ACTIONS.SET_INITIAL_ADS,
+          payload: { ads: res.body.data.ads || [] },
+        });
       } catch (err) {
         dispatch({ type: ACTIONS.ERROR, payload: { error: err } });
       }
