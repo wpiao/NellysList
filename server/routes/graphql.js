@@ -102,7 +102,7 @@ const RootQueryType = new GraphQLObjectType({
   fields: () => ({
     book: {
       type: AdType,
-      description: 'A Single Book',
+      description: 'A Single Ad',
       args: {
         id: { type: GraphQLInt },
       },
