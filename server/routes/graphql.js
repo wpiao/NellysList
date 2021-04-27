@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const { graphqlHTTP } = require('express-graphql');
-const { graphqlExpress, graphiqlExpress } = require('graphql-server-express');
 const {
   GraphQLSchema,
   GraphQLObjectType,
@@ -10,6 +9,8 @@ const {
   GraphQLInt,
   GraphQLNonNull,
 } = require('graphql');
+const uuidv4 = require('uuid').v4;
+const moment = require('moment');
 
 const ads = [
   {
@@ -87,8 +88,8 @@ const AdType = new GraphQLObjectType({
     id: { type: GraphQLNonNull(GraphQLString) },
     title: { type: GraphQLNonNull(GraphQLString) },
     description: { type: GraphQLNonNull(GraphQLString) },
-    price: { type: GraphQLNonNull(GraphQLInt) },
-    photo: { type: GraphQLNonNull(GraphQLString) },
+    price: { type: GraphQLInt },
+    photo: { type: GraphQLString },
     condition: { type: GraphQLNonNull(GraphQLString) },
     email: { type: GraphQLNonNull(GraphQLString) },
     zipCode: { type: GraphQLNonNull(GraphQLString) },
@@ -117,47 +118,57 @@ const RootQueryType = new GraphQLObjectType({
   }),
 });
 
-// const RootMutationType = new GraphQLObjectType({
-//   name: 'Mutation',
-//   description: 'Root Mutation',
-//   fields: () => ({
-//     addBook: {
-//       type: BookType,
-//       description: 'Add a book',
-//       args: {
-//         name: { type: GraphQLNonNull(GraphQLString) },
-//       },
-//       resolve: (parent, args) => {
-//         const book = {
-//           id: ads.length + 1,
-//           name: args.name,
-//         };
-//         ads.push(book);
-//         return book;
-//       },
-//     },
-//   }),
-// });
 
+const RootMutationType = new GraphQLObjectType({
+  name: 'Mutation',
+  description: 'Root Mutation',
+  fields: () => ({
+    createAd: {
+      type: AdType,
+      description: 'Create an Ad',
+      args: {
+        title: { type: GraphQLNonNull(GraphQLString) },
+        price: { type: GraphQLInt },
+        description: { type: GraphQLNonNull(GraphQLString) },
+        photo: { type: GraphQLString },
+        condition: { type: GraphQLNonNull(GraphQLString) },
+        email: { type: GraphQLNonNull(GraphQLString) },
+        zipCode: { type: GraphQLNonNull(GraphQLString) },
+      },
+      resolve: (parent, args) => {
+        const now = moment.utc().format('YYYY-MM-DD HH:mm:ss');
+        const createdDate = now;
+        const modifiedDate = now;
+        const id = uuidv4();
+        const ad = {
+          id: id,
+          title: args.title,
+          description: args.description,
+          price: args.price,
+          photo: args.photo,
+          condition: args.condition,
+          email: args.email,
+          zipCode: args.zipCode,
+          modifiedDate: modifiedDate,
+          createdDate: createdDate,
+        };
+        ads.push(ad);
+        return ad;
+      },
+    },
+  }),
+});
 const schema = new GraphQLSchema({
   query: RootQueryType,
-  // mutation: RootMutationType,
+  mutation: RootMutationType,
 });
 
-// GraphQL endpoint for application use
 router.use(
   '/graphql',
-  graphqlExpress({
+  graphqlHTTP({
     schema: schema,
     debug: true,
-  })
-);
-
-// GraphIQL IDE for inputting queries
-router.use(
-  '/graphiql',
-  graphiqlExpress({
-    endpointURL: '/api/graphql',
+    graphiql: true
   })
 );
 
