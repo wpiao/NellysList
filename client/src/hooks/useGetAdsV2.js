@@ -4,6 +4,7 @@ import { AdsContext, ACTIONS } from '../contexts/AdsContext';
 
 export const useGetAdsV2 = () => {
   const [adsState, dispatch] = useContext(AdsContext);
+  const { ads, isLoading, error } = adsState;
 
   useEffect(() => {
     const fetchGetAds = async () => {
@@ -17,10 +18,7 @@ export const useGetAdsV2 = () => {
       }
     };
     fetchGetAds();
-  }, [dispatch]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  return {
-    ads: adsState.ads,
-    isLoading: adsState.isLoading,
-  };
+  return { ads, isLoading, error };
 };
