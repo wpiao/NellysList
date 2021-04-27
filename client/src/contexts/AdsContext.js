@@ -2,7 +2,8 @@ import React, { useReducer, useMemo, createContext } from 'react';
 
 export const ACTIONS = {
   LOAD_ADS: 'load-ads',
-  UPDATE_ADS: 'update-ads',
+  SET_INITIAL_ADS: 'update-ads',
+  SET_FILTERED_ADS: 'set-filtered-ads',
   ERROR: 'error',
 };
 
@@ -10,8 +11,15 @@ const reducer = (state, action) => {
   switch (action.type) {
     case ACTIONS.LOAD_ADS:
       return { ...state, isLoading: true, ads: [] };
-    case ACTIONS.UPDATE_ADS:
-      return { ...state, isLoading: false, ads: action.payload.ads };
+    case ACTIONS.SET_INITIAL_ADS:
+      return {
+        ...state,
+        isLoading: false,
+        ads: action.payload.ads,
+        searchedAds: action.payload.ads,
+      };
+    case ACTIONS.SET_FILTERED_ADS:
+      return { ...state, ads: action.payload.ads };
     case ACTIONS.ERROR:
       return {
         ...state,
@@ -27,6 +35,7 @@ const reducer = (state, action) => {
 const initialState = {
   isLoading: false,
   ads: [],
+  searchedAds: [],
   error: null,
 };
 

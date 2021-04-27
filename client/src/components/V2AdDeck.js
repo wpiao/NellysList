@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { V2Ad } from './V2Ad';
 import { CardDeck, CardColumns, Container } from 'react-bootstrap';
+import { AdsContext } from '../contexts/AdsContext';
 
-export const V2AdDeck = ({ ads }) => {
+export const V2AdDeck = () => {
+  const [adsState] = useContext(AdsContext);
+  const { ads } = adsState;
+
   return (
     <Container>
       <CardDeck>

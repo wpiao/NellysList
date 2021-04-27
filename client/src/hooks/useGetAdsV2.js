@@ -4,15 +4,14 @@ import { AdsContext, ACTIONS } from '../contexts/AdsContext';
 
 export const useGetAdsV2 = () => {
   const [adsState, dispatch] = useContext(AdsContext);
-  const { ads, isLoading, error } = adsState;
+  const { ads, searchedAds, isLoading, error } = adsState;
 
   useEffect(() => {
     const fetchGetAds = async () => {
       dispatch({ type: ACTIONS.LOAD_ADS });
       try {
         const res = await ajax.get('/api/ads');
-        dispatch({ type: ACTIONS.UPDATE_ADS, payload: { ads: res.body } });
-        // TODO: Set searchAds state
+        dispatch({ type: ACTIONS.SET_INITIAL_ADS, payload: { ads: res.body } });
       } catch (err) {
         dispatch({ type: ACTIONS.ERROR, payload: { error: err } });
       }
@@ -20,5 +19,5 @@ export const useGetAdsV2 = () => {
     fetchGetAds();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  return { ads, isLoading, error };
+  return { ads, searchedAds, isLoading, error };
 };

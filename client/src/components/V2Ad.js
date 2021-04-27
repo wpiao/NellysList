@@ -10,14 +10,12 @@ export const V2Ad = ({ ad }) => {
   };
 
   return (
-    <>
-      <Card onClick={handleClick} className="Ad">
-        <Card.Img variant="top" src={ad.photo} />
-        <Card.Body>
-          <Card.Title style={{ textAlign: 'center' }}>{ad.title}</Card.Title>
-          <Card.Text style={{ textAlign: 'center' }}>${ad.price}</Card.Text>
-        </Card.Body>
-      </Card>
-    </>
+    <Card onClick={handleClick} className="Ad">
+      <Card.Img variant="top" src={ad.photo} />
+      <Card.Body>
+        <Card.Title style={{ textAlign: 'center' }}>{ad.title}</Card.Title>
+        <Card.Text style={{ textAlign: 'center' }}>${ad.price}</Card.Text>
+      </Card.Body>
+    </Card>
   );
 };
