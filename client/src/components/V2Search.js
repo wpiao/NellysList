@@ -13,7 +13,7 @@ export const V2Search = () => {
       return ad.title.toLowerCase().includes(val.toLowerCase());
     });
     setInput(val);
-    dispatch({ type: ACTIONS.SET_FILTERED_ADS, payload: { ads: filtered } });
+    dispatch({ type: ACTIONS.SEARCH_ADS, payload: { ads: filtered } });
   };
 
   return (

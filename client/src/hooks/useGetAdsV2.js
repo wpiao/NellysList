@@ -1,6 +1,7 @@
 import { useEffect, useContext } from 'react';
 import { AdsContext, ACTIONS } from '../contexts/AdsContext';
 import { useQuery, gql } from '@apollo/client';
+// import { getAds } from '../api/apiUtils';
 
 const GET_ADS = gql`
   query GetAds {
@@ -33,11 +34,28 @@ export const useGetAdsV2 = () => {
     }
     if (data) {
       dispatch({
-        type: ACTIONS.SET_INITIAL_ADS,
+        type: ACTIONS.GET_ADS,
         payload: { ads: data.ads }
       })
     }
   }, [data]);
 
-  return { ads, searchedAds, isLoading, error };
+  //------------ This is for API call to the /api/ads----------------
+  // useEffect(() => {
+  //   const fetchGetAds = async () => {
+  //     dispatch({ type: ACTIONS.LOAD_ADS });
+  //     try {
+  //       const res = await getAds();
+  //       dispatch({
+  //         type: ACTIONS.GET_ADS,
+  //         payload: { ads: res },
+  //       });
+  //     } catch (err) {
+  //       dispatch({ type: ACTIONS.ERROR, payload: { error: err } });
+  //     }
+  //   };
+  //   fetchGetAds();
+  // }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  return { ads, searchedAds, isLoading, error, dispatch };
 };
