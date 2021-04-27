@@ -5,16 +5,19 @@ export const ACTIONS = {
   GET_ADS: 'get-ads',
   SEARCH_ADS: 'set-filtered-ads',
   ERROR: 'error',
+  LOAD_AD: 'load-ad',
+  GET_AD: 'get-ad',
+  ERROR_AD: 'error-ad',
 };
 
 const reducer = (state, action) => {
   switch (action.type) {
     case ACTIONS.LOAD_ADS:
-      return { ...state, isLoading: true, ads: [] };
+      return { ...state, isLoadingAds: true, ads: [] };
     case ACTIONS.GET_ADS:
       return {
         ...state,
-        isLoading: false,
+        isLoadingAds: false,
         ads: action.payload.ads,
         searchedAds: action.payload.ads,
       };
@@ -23,9 +26,24 @@ const reducer = (state, action) => {
     case ACTIONS.ERROR:
       return {
         ...state,
-        isLoading: false,
+        isLoadingAds: false,
         error: action.payload.error,
         ads: [],
+      };
+    case ACTIONS.LOAD_AD:
+      return { ...state, isLoadingAd: true, ad: null };
+    case ACTIONS.GET_AD:
+      return {
+        ...state,
+        isLoadingAd: false,
+        ad: action.payload.ad,
+      };
+    case ACTIONS.ERROR_AD:
+      return {
+        ...state,
+        isLoadingAd: false,
+        adError: action.payload.error,
+        ad: null,
       };
     default:
       return state;
@@ -33,10 +51,13 @@ const reducer = (state, action) => {
 };
 
 const initialState = {
-  isLoading: false,
+  isLoadingAds: false,
   ads: [],
   searchedAds: [],
   error: null,
+  isLoadingAd: false,
+  ad: null,
+  adError: null,
 };
 
 export const AdsContext = createContext(initialState);
