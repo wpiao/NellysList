@@ -1,6 +1,6 @@
-import ajax from 'superagent';
 import { useEffect, useContext } from 'react';
 import { AdsContext, ACTIONS } from '../contexts/AdsContext';
+import { getAds } from '../api/apiUtils';
 
 export const useGetAdsV2 = () => {
   const [adsState, dispatch] = useContext(AdsContext);
@@ -10,10 +10,10 @@ export const useGetAdsV2 = () => {
     const fetchGetAds = async () => {
       dispatch({ type: ACTIONS.LOAD_ADS });
       try {
-        const res = await ajax.get('/api/ads');
+        const res = await getAds();
         dispatch({
-          type: ACTIONS.SET_INITIAL_ADS,
-          payload: { ads: res.body.data.ads || [] },
+          type: ACTIONS.GET_ADS,
+          payload: { ads: res },
         });
       } catch (err) {
         dispatch({ type: ACTIONS.ERROR, payload: { error: err } });
@@ -22,5 +22,5 @@ export const useGetAdsV2 = () => {
     fetchGetAds();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  return { ads, searchedAds, isLoading, error };
+  return { ads, searchedAds, isLoading, error, dispatch };
 };
