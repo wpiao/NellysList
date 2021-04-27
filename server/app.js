@@ -27,34 +27,6 @@ app.use(apiPrefix + '/ads', adsRouter);
 app.use(apiPrefix + '/ad', adRouter);
 app.use(apiPrefix + '/upload', uploadRouter);
 
-// sandbox
-const { graphqlHTTP } = require('express-graphql');
-const mockData = require('../client/src/mock-data');
-console.log(mockData);
-const {
-  GraphQLSchema,
-  GraphQLObjectType,
-  GraphQLString
-} = require('graphql');
-
-const schema = new GraphQLSchema({
-  query: new GraphQLObjectType({
-    name: 'HelloWorld',
-    fields: () => ({
-      message: {
-        type: GraphQLString,
-        resolve: () => 'Hello World'
-      }
-    })
-  })
-})
-
-app.use('/graphql', graphqlHTTP({
-  schema: schema,
-  graphiql: true
-}));
-
-
 if (process.env.NODE_ENV === 'production') {
   // Set static folder
   app.use(express.static('../client/build'));
