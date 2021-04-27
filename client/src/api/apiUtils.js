@@ -2,17 +2,7 @@ import ajax from 'superagent';
 
 export const getAds = async () => {
   try {
-    // OLD GET ROUTE 
-    // const res = await ajax.get('/api/ads'); 
-    // NEW GRAPHQL ROUTE
-    const res = await ajax
-      .post('/api/ads/graphql')
-      .send({
-        query:
-          '{ ads { id, title, price, description, photo, condition, email, zipCode, modifiedDate, createdDate } }',
-      })
-      .set('Content-Type', 'application/json')
-      .set('Accept', 'application/json');
+    const res = await ajax.get('/api/ads'); 
     return res.body.data.ads;
   } catch (err) {
     // will make a error component and render it when error happens
