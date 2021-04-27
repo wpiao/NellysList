@@ -25,7 +25,6 @@ export const Home = () => {
   const [isLoadingPOST, setLoadingPOST] = useState(false);
   const [input, setInput] = useState('');
   const { loading, error, data } = useQuery(GET_ADS);
-  console.log(data);
 
   const createAd = async (ad, base64encodedImage, selectedFile) => {
     setLoadingPOST(true);
