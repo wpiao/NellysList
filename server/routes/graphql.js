@@ -9,6 +9,8 @@ const {
   GraphQLInt,
   GraphQLNonNull,
 } = require('graphql');
+const uuidv4 = require('uuid').v4;
+const moment = require('moment');
 
 const ads = [
   {
@@ -86,8 +88,8 @@ const AdType = new GraphQLObjectType({
     id: { type: GraphQLNonNull(GraphQLString) },
     title: { type: GraphQLNonNull(GraphQLString) },
     description: { type: GraphQLNonNull(GraphQLString) },
-    price: { type: GraphQLNonNull(GraphQLInt) },
-    photo: { type: GraphQLNonNull(GraphQLString) },
+    price: { type: GraphQLInt },
+    photo: { type: GraphQLString },
     condition: { type: GraphQLNonNull(GraphQLString) },
     email: { type: GraphQLNonNull(GraphQLString) },
     zipCode: { type: GraphQLNonNull(GraphQLString) },
