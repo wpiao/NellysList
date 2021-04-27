@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './components/App';
+import V2App from './components/V2App';
 import { BrowserRouter as Router } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
@@ -21,7 +21,7 @@ ReactDOM.render(
   <React.StrictMode>
     <Router>
       <AlertProvider template={AlertTemplate} {...options}>
-        <App />
+        <V2App />
       </AlertProvider>
     </Router>
   </React.StrictMode>,

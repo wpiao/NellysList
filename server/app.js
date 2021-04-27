@@ -8,6 +8,7 @@ const cors = require('cors');
 const adsRouter = require('./routes/ads');
 const adRouter = require('./routes/ad');
 const uploadRouter = require('./routes/upload');
+const graphqlRouter = require('./routes/graphql');
 
 const app = express();
 
@@ -26,6 +27,7 @@ const apiPrefix = '/api';
 app.use(apiPrefix + '/ads', adsRouter);
 app.use(apiPrefix + '/ad', adRouter);
 app.use(apiPrefix + '/upload', uploadRouter);
+app.use(apiPrefix + '/graphql', graphqlRouter);
 
 if (process.env.NODE_ENV === 'production') {
   // Set static folder
