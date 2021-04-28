@@ -7,6 +7,7 @@ import { ACTIONS } from '../contexts/AdsContext';
 import { postAds, getAds, postUpload } from '../api/apiUtils';
 import { useAlert } from 'react-alert';
 import { V2AdDetails } from './V2AdDetails';
+import { V2CreateAdFormWrapper } from './V2CreateAdFormWrapper';
 
 export const V2Home = () => {
   const { ads, isLoadingAds, dispatch } = useGetAdsV2();
@@ -32,8 +33,8 @@ export const V2Home = () => {
 
       alert.show('Successfully Saved!', { type: 'success' });
     } catch (err) {
+      dispatch({ type: ACTIONS.ERROR_ADS, payload: { error: err } });
       alert.show('Something Went Wrong!', { type: 'error' });
-      console.log(err);
     }
   };
 
@@ -51,6 +52,7 @@ export const V2Home = () => {
         }
       />
       <Route path="/ad/:id" exact children={<V2AdDetails />} />
+      <Route path="/ad/:id/edit" exact children={<V2CreateAdFormWrapper />} />
     </Switch>
   );
 };
