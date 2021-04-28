@@ -6,7 +6,7 @@ import { GET_ADS } from '../GraphQL/queries';
 
 export const useGetAdsV2 = () => {
   const [adsState, dispatch] = useContext(AdsContext);
-  const { ads, searchedAds, isLoading } = adsState;
+  const { ads, searchedAds, isLoadingAds } = adsState;
   const { loading, error, data } = useQuery(GET_ADS);
 
   useEffect(() => {
@@ -19,10 +19,10 @@ export const useGetAdsV2 = () => {
     if (data) {
       dispatch({
         type: ACTIONS.GET_ADS,
-        payload: { ads: data.ads }
-      })
+        payload: { ads: data.ads },
+      });
     }
-  }, [data]);
+  }, [data]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  return { ads, searchedAds, isLoading, error, dispatch };
+  return { ads, searchedAds, isLoadingAds, error, dispatch };
 };
