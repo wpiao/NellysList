@@ -5,14 +5,23 @@ export const GET_ADS = gql`
     ads {
       id
       title
+      price
+      photo
+    }
+  }
+`;
+
+export const GET_AD_BY_ID = gql`
+  query GetAdById {
+    ad {
+      id
+      title
       description
       price
       photo
       condition
       email
       zipCode
-      modifiedDate
-      createdDate
     }
   }
 `;
