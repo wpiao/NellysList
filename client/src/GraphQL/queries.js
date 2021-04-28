@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const GET_ADS = gql`
-  query GetAds {
+  query getAds {
     ads {
       id
       title
@@ -12,8 +12,8 @@ export const GET_ADS = gql`
 `;
 
 export const GET_AD_BY_ID = gql`
-  query GetAdById {
-    ad {
+  query getAdById($id: String!){
+    ad(id: $id) {
       id
       title
       description
