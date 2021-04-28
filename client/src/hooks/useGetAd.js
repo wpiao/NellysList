@@ -1,16 +1,20 @@
 import { useState, useEffect, useContext } from 'react';
-import { getLatLngByZipCode, getAd } from '../api/apiUtils';
+import { getLatLngByZipCode } from '../api/apiUtils';
 import { useParams } from 'react-router-dom';
 import { AdsContext, ACTIONS } from '../contexts/AdsContext';
+import { useQuery } from '@apollo/client';
+import { GET_AD_BY_ID } from '../GraphQL/queries';
 
 export const useGetAd = () => {
   const { id } = useParams();
   const [coordinates, setCoordinates] = useState(null);
   const [adsState, dispatch] = useContext(AdsContext);
   const { ad, isLoadingAd, adError } = adsState;
+  const { loading, error, data } = useQuery(GET_AD_BY_ID, {
+    variables: { id }
+  });
 
   useEffect(() => {
-    dispatch({ type: ACTIONS.LOAD_AD });
     const getMapData = async (zipCode) => {
       try {
         const res = await getLatLngByZipCode(zipCode);
@@ -26,20 +30,23 @@ export const useGetAd = () => {
     };
 
     const initAd = async () => {
-      try {
-        const res = await getAd(id);
-        await getMapData(res.zipCode);
+      if (loading) {
+        dispatch({ type: ACTIONS.LOAD_AD });
+      }
+      if (error) {
+        dispatch({ type: ACTIONS.ERROR, payload: { error: error } });
+      }
+      if (data) {
+        await getMapData(data.ad.zipCode);
         dispatch({
           type: ACTIONS.GET_AD,
-          payload: { ad: res },
+          payload: { ad: data.ad },
         });
-      } catch (error) {
-        dispatch({ type: ACTIONS.ERROR, payload: { error: error } });
       }
     };
 
     initAd();
-  }, [id]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [id, data]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return { ad, coordinates, isLoadingAd, adError };
 };
