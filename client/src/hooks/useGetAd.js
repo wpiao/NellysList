@@ -46,7 +46,7 @@ export const useGetAd = () => {
     };
 
     initAd();
-  }, [id, data]);
+  }, [id, data]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return { ad, coordinates, isLoadingAd, adError };
 };
