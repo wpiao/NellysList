@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Col, Form, Button } from 'react-bootstrap';
 import { CONDITION } from './Condition';
 import { Upload } from './Upload';
 import SpinnerWrapper from './SpinnerWrapper';
 import { AdFormInputGroup } from './AdFormInputGroup';
 import { ImagePreview } from './ImagePreview';
+import { useGetAd } from '../hooks/useGetAd';
 
 const AD_INPUTS = {
   ID: 'id',
@@ -37,8 +38,14 @@ export const V2CreateAdForm = ({ id, isLoading, handleSubmit }) => {
   const [validated, setValidated] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewSource, setPreviewSource] = useState(null);
+  const { ad: adResponse } = useGetAd(id, false);
 
-  // TODO: add useEffect for Edit state
+  useEffect(() => {
+    if (id && adResponse) {
+      setAd(adResponse);
+      setPreviewSource(adResponse.photo);
+    }
+  }, [id, adResponse]);
 
   const handleSelectedFile = (file) => {
     setSelectedFile(file);

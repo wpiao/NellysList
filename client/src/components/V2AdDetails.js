@@ -4,10 +4,12 @@ import { useHistory } from 'react-router-dom';
 import SpinnerWrapper from './SpinnerWrapper';
 import { Map } from './Map';
 import { useGetAd } from '../hooks/useGetAd';
+import { useParams } from 'react-router-dom';
 
 export const V2AdDetails = () => {
+  const { id } = useParams();
   const history = useHistory();
-  const { ad, coordinates, isLoadingAd, adError } = useGetAd();
+  const { ad, coordinates, isLoadingAd, adError } = useGetAd(id, true);
 
   const handleEdit = () => {
     history.push(`/ad/${ad.id}/edit`);
