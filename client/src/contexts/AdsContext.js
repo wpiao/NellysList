@@ -4,10 +4,12 @@ export const ACTIONS = {
   LOAD_ADS: 'load-ads',
   GET_ADS: 'get-ads',
   SEARCH_ADS: 'set-filtered-ads',
-  ERROR: 'error',
+  ERROR_ADS: 'error-ads',
   LOAD_AD: 'load-ad',
   GET_AD: 'get-ad',
   ERROR_AD: 'error-ad',
+  LOAD_EDIT_AD: 'load-edit-ad',
+  ERROR_EDIT_AD: 'error-edit-ad',
 };
 
 const reducer = (state, action) => {
@@ -23,7 +25,7 @@ const reducer = (state, action) => {
       };
     case ACTIONS.SEARCH_ADS:
       return { ...state, ads: action.payload.ads };
-    case ACTIONS.ERROR:
+    case ACTIONS.ERROR_ADS:
       return {
         ...state,
         isLoadingAds: false,

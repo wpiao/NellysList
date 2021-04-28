@@ -14,7 +14,7 @@ export const useGetAdsV2 = () => {
       dispatch({ type: ACTIONS.LOAD_ADS });
     }
     if (error) {
-      dispatch({ type: ACTIONS.ERROR, payload: { error: error } });
+      dispatch({ type: ACTIONS.ERROR_ADS, payload: { error: error } });
     }
     if (data) {
       dispatch({
