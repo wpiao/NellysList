@@ -118,7 +118,6 @@ const RootQueryType = new GraphQLObjectType({
   }),
 });
 
-
 const RootMutationType = new GraphQLObjectType({
   name: 'Mutation',
   description: 'Root Mutation',
@@ -156,6 +155,38 @@ const RootMutationType = new GraphQLObjectType({
         return ad;
       },
     },
+    updateAd: {
+      type: AdType,
+      description: 'Update an Ad',
+      args: {
+        id: { type: GraphQLNonNull(GraphQLString) },
+        title: { type: GraphQLString },
+        price: { type: GraphQLInt },
+        description: { type: GraphQLString },
+        photo: { type: GraphQLString },
+        condition: { type: GraphQLString },
+        email: { type: GraphQLString },
+        zipCode: { type: GraphQLString },
+      },
+      resolve: (parent, args) => {
+        const result = ads.find((ad) => args.id === ad.id);
+        console.log(Object.keys(args));
+        if (result) {
+          if (Object.keys(args).length > 1) {
+            // if object is found and there are other params besides id, update modifiedDate and ad key
+            for (const [key, value] of Object.entries(args)) {
+              if (result[key] != value) {
+                result[key] = value;
+              }
+            }
+            result.modifiedDate = moment.utc().format('YYYY-MM-DD HH:mm:ss');
+          }
+          return result;
+        } else {
+          throw new Error('Ad not found, please check ID.');
+        }
+      },
+    },
   }),
 });
 const schema = new GraphQLSchema({
@@ -168,7 +199,7 @@ router.use(
   graphqlHTTP({
     schema: schema,
     debug: true,
-    graphiql: true
+    graphiql: true,
   })
 );
 
