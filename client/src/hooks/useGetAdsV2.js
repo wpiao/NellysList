@@ -1,23 +1,8 @@
 import { useEffect, useContext } from 'react';
 import { AdsContext, ACTIONS } from '../contexts/AdsContext';
-import { useQuery, gql } from '@apollo/client';
+import { useQuery } from '@apollo/client';
+import { GET_ADS } from '../GraphQL/queries';
 
-const GET_ADS = gql`
-  query GetAds {
-    ads {
-      id
-      title
-      description
-      price
-      photo
-      condition
-      email
-      zipCode
-      modifiedDate
-      createdDate
-    }
-  }
-`;
 
 export const useGetAdsV2 = () => {
   const [adsState, dispatch] = useContext(AdsContext);
