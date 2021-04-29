@@ -186,6 +186,23 @@ const RootMutationType = new GraphQLObjectType({
         }
       },
     },
+    deleteAd: {
+      type: AdType,
+      description: 'Delete an Ad',
+      args: {
+        id: { type: GraphQLNonNull(GraphQLString) },
+      },
+      resolve: (parent, args) => {
+        const index = ads.findIndex((ad) => args.id === ad.id);
+        const deletedAd = ads[index];
+        if (deletedAd) {     
+          ads.splice(index, 1);
+          return deletedAd;
+        } else {
+          throw new Error('Ad not found, please check ID.');
+        }
+      },
+    },
   }),
 });
 const schema = new GraphQLSchema({
