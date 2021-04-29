@@ -14,8 +14,6 @@ export const V2CreateAdFormWrapper = () => {
   const { id } = useParams();
 
   const updateAd = async (ad, base64encodedImage, selectedFile) => {
-    dispatch({ type: ACTIONS.LOAD_ADS });
-
     // TODO: upload image before update request
     // if (ad.photo && selectedFile !== null) {
     //   const imageUrl = await postUpload(base64encodedImage);
@@ -63,6 +61,10 @@ export const V2CreateAdFormWrapper = () => {
         `,
         fetchPolicy: 'no-cache',
       });
+
+      if (res.loading) {
+        dispatch({ type: ACTIONS.LOAD_ADS });
+      }
 
       dispatch({
         type: ACTIONS.GET_ADS,

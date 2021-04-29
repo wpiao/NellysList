@@ -28,7 +28,6 @@ export const useGetAd = (id, mapOption) => {
 
   useEffect(() => {
     const getAd = async () => {
-      dispatch({ type: ACTIONS.LOAD_AD });
       try {
         const res = await client.query({
           query: gql`
@@ -46,6 +45,10 @@ export const useGetAd = (id, mapOption) => {
             }
           `,
         });
+
+        if (res.loading) {
+          dispatch({ type: ACTIONS.LOAD_AD });
+        }
 
         if (mapOption && res?.data?.ad) {
           await getMapData(res.data.ad.zipCode);
