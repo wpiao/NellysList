@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Container, Col, Form, Button } from 'react-bootstrap';
 import { CONDITION } from './Condition';
 import { Upload } from './Upload';
 import SpinnerWrapper from './SpinnerWrapper';
 import { AdFormInputGroup } from './AdFormInputGroup';
 import { ImagePreview } from './ImagePreview';
-import { useGetAd } from '../hooks/useGetAd';
+import { useQuery } from '@apollo/client';
+import { GET_AD_BY_ID } from '../GraphQL/queries';
+import { useAlert } from 'react-alert';
+import { useHistory } from 'react-router-dom';
 
 const AD_INPUTS = {
   ID: 'id',
@@ -38,14 +41,19 @@ export const V2CreateAdForm = ({ id, isLoading, handleSubmit }) => {
   const [validated, setValidated] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewSource, setPreviewSource] = useState(null);
-  const { ad: adResponse } = useGetAd(id, false);
+  const alert = useAlert();
+  const history = useHistory();
 
-  useEffect(() => {
-    if (id && adResponse) {
-      setAd(adResponse);
-      setPreviewSource(adResponse.photo);
-    }
-  }, [id, adResponse]);
+  const { loading, error, data } = useQuery(GET_AD_BY_ID, {
+    variables: { id },
+    skip: !id, // only make api call if id exists in url
+    onCompleted: async (data) => {
+      if (data?.ad) {
+        setAd(data.ad);
+        setPreviewSource(data.ad.photo);
+      }
+    },
+  });
 
   const handleSelectedFile = (file) => {
     setSelectedFile(file);
@@ -72,9 +80,21 @@ export const V2CreateAdForm = ({ id, isLoading, handleSubmit }) => {
     setValidated(true);
   };
 
+  const handleCancel = () => {
+    if (data?.ad?.id) {
+      history.push(`/ad/${data.ad.id}`);
+    }
+  };
+
+  if (error) {
+    alert.show('Something Went Wrong!', { type: 'error' });
+  }
+
   return (
     <Container>
-      <SpinnerWrapper isLoading={isLoading} />
+      {/* TODO: Fix loading state. Need to cover 3 scenarios.
+                1. create btn, 2. update btn 3. load ad by id */}
+      <SpinnerWrapper isLoading={id ? loading : isLoading} />
       <Form onSubmit={submit} noValidate validated={validated}>
         <Form.Row>
           <Col xs={4}>
@@ -146,6 +166,11 @@ export const V2CreateAdForm = ({ id, isLoading, handleSubmit }) => {
             <Button variant="primary" type="submit">
               {id ? 'Update' : 'Create'}
             </Button>
+            {id && (
+              <Button variant="info" className="ml-1" onClick={handleCancel}>
+                Cancel
+              </Button>
+            )}
           </Col>
         </Form.Row>
       </Form>
