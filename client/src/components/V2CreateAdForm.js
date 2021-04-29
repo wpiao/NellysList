@@ -1,14 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Col, Form, Button } from 'react-bootstrap';
 import { CONDITION } from './Condition';
 import { Upload } from './Upload';
 import SpinnerWrapper from './SpinnerWrapper';
 import { AdFormInputGroup } from './AdFormInputGroup';
 import { ImagePreview } from './ImagePreview';
-import { useQuery } from '@apollo/client';
-import { GET_AD_BY_ID } from '../GraphQL/queries';
-import { useAlert } from 'react-alert';
 import { useHistory } from 'react-router-dom';
+import { useGetAd } from '../hooks/useGetAd';
 
 const AD_INPUTS = {
   ID: 'id',
@@ -37,23 +35,19 @@ const INITIAL_AD_STATE = {
 };
 
 export const V2CreateAdForm = ({ id, isLoading, handleSubmit }) => {
-  const [ad, setAd] = useState({ ...INITIAL_AD_STATE });
+  const [ad, setAd] = useState(INITIAL_AD_STATE);
   const [validated, setValidated] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewSource, setPreviewSource] = useState(null);
-  const alert = useAlert();
   const history = useHistory();
+  const { ad: adResponse } = useGetAd(id, false);
 
-  const { loading, error, data } = useQuery(GET_AD_BY_ID, {
-    variables: { id },
-    skip: !id, // only make api call if id exists in url
-    onCompleted: async (data) => {
-      if (data?.ad) {
-        setAd(data.ad);
-        setPreviewSource(data.ad.photo);
-      }
-    },
-  });
+  useEffect(() => {
+    if (id && adResponse) {
+      setAd(adResponse);
+      setPreviewSource(adResponse.photo);
+    }
+  }, [id, adResponse]);
 
   const handleSelectedFile = (file) => {
     setSelectedFile(file);
@@ -81,20 +75,14 @@ export const V2CreateAdForm = ({ id, isLoading, handleSubmit }) => {
   };
 
   const handleCancel = () => {
-    if (data?.ad?.id) {
-      history.push(`/ad/${data.ad.id}`);
-    }
+    history.push(`/ad/${id}`);
   };
-
-  if (error) {
-    alert.show('Something Went Wrong!', { type: 'error' });
-  }
 
   return (
     <Container>
       {/* TODO: Fix loading state. Need to cover 3 scenarios.
                 1. create btn, 2. update btn 3. load ad by id */}
-      <SpinnerWrapper isLoading={id ? loading : isLoading} />
+      <SpinnerWrapper isLoading={isLoading} />
       <Form onSubmit={submit} noValidate validated={validated}>
         <Form.Row>
           <Col xs={4}>
