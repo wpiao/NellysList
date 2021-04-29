@@ -1,21 +1,15 @@
 import React from 'react';
 import { Container, Col, Card, Form, Button, Row } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
-// import SpinnerWrapper from './SpinnerWrapper';
+import SpinnerWrapper from './SpinnerWrapper';
 import { Map } from './Map';
 import { useGetAd } from '../hooks/useGetAd';
 import { useParams } from 'react-router-dom';
-// import { useAlert } from 'react-alert';
-// import { client } from '../components/V2App';
-// import { gql } from '@apollo/client';
 
 export const V2AdDetails = () => {
   const { id } = useParams();
   const history = useHistory();
-  // const alert = useAlert();
-
-  // isLoadingAd, adError,
-  const { ad, coordinates, isLoadingMap } = useGetAd(id, true);
+  const { ad, isLoadingAd, coordinates, isLoadingMap } = useGetAd(id, true);
 
   const handleEdit = () => {
     history.push(`/ad/${id}/edit`);
@@ -54,7 +48,7 @@ export const V2AdDetails = () => {
       {ad && (
         <Container className="mb-5">
           {/* TODO: spinner for waiting on DELETE */}
-          {/* <SpinnerWrapper isLoadingDELETE={isLoadingDELETE} /> */}
+          <SpinnerWrapper isLoading={isLoadingAd} />
           <Row>
             <Col xs={6}>
               <Card>
