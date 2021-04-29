@@ -9,7 +9,7 @@ import { gql } from '@apollo/client';
 
 export const V2CreateAdFormWrapper = () => {
   const [adsState, dispatch] = useContext(AdsContext);
-  const { isLoadingAds } = adsState;
+  const { ads, isLoadingAds } = adsState;
   const alert = useAlert();
   const { id } = useParams();
 
@@ -65,7 +65,7 @@ export const V2CreateAdFormWrapper = () => {
 
       dispatch({
         type: ACTIONS.GET_ADS,
-        payload: { ads: res?.data?.ads },
+        payload: { ads: res?.data?.ads || ads },
       });
 
       alert.show('Successfully Saved!', { type: 'success' });

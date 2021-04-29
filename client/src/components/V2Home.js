@@ -4,10 +4,12 @@ import { useGetAdsV2 } from '../hooks/useGetAdsV2';
 import { AdsPage } from './AdsPage';
 import { V2CreateAdForm } from './V2CreateAdForm';
 import { ACTIONS } from '../contexts/AdsContext';
-import { postAds, getAds, postUpload } from '../api/apiUtils';
+import { postUpload } from '../api/apiUtils';
 import { useAlert } from 'react-alert';
 import { V2AdDetails } from './V2AdDetails';
 import { V2CreateAdFormWrapper } from './V2CreateAdFormWrapper';
+import { client } from '../components/V2App';
+import { gql } from '@apollo/client';
 
 export const V2Home = () => {
   const { ads, isLoadingAds, dispatch } = useGetAdsV2();
@@ -23,12 +25,51 @@ export const V2Home = () => {
     }
 
     try {
-      await postAds(ad);
-      const res = await getAds();
+      await client.mutate({
+        mutation: gql`
+          mutation {
+            createAd(
+              title: "${ad.title}",
+              price: ${ad.price},
+              description: "${ad.description}",
+              photo: "${ad.photo}",
+              condition: "${ad.condition}",
+              email: "${ad.email}",
+              zipCode: "${ad.zipCode}",
+            ) {
+              id
+              title
+              description
+              price
+              photo
+              condition
+              email
+              zipCode
+              modifiedDate
+              createdDate
+            }
+          }
+        `,
+      });
+
+      const res = await client.query({
+        query: gql`
+          query getAds {
+            ads {
+              id
+              title
+              price
+              photo
+            }
+          }
+        `,
+        // fetching from cache will not have newly created ad. disable cache to get the latest fetch.
+        fetchPolicy: 'no-cache',
+      });
 
       dispatch({
         type: ACTIONS.GET_ADS,
-        payload: { ads: res },
+        payload: { ads: res?.data?.ads || ads },
       });
 
       alert.show('Successfully Saved!', { type: 'success' });
