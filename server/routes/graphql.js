@@ -170,7 +170,6 @@ const RootMutationType = new GraphQLObjectType({
       },
       resolve: (parent, args) => {
         const result = ads.find((ad) => args.id === ad.id);
-        // console.log(Object.keys(args));
         if (result) {
           if (Object.keys(args).length > 1) {
             // if object is found and there are other params besides id, update modifiedDate and ad key
