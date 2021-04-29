@@ -61,7 +61,7 @@ export const useGetAd = (id, mapOption) => {
     };
 
     getAd();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return { ad, coordinates, isLoadingAd, adError, isLoadingMap };
 };
