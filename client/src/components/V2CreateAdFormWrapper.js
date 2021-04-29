@@ -61,6 +61,7 @@ export const V2CreateAdFormWrapper = () => {
             }
           }
         `,
+        fetchPolicy: 'no-cache',
       });
 
       dispatch({
