@@ -16,8 +16,6 @@ export const V2Home = () => {
   const alert = useAlert();
 
   const createAd = async (ad, base64encodedImage, selectedFile) => {
-    dispatch({ type: ACTIONS.LOAD_ADS });
-
     if (selectedFile) {
       // First, attempt to upload image
       const imageUrl = await postUpload(base64encodedImage);
@@ -66,6 +64,10 @@ export const V2Home = () => {
         // fetching from cache will not have newly created ad. disable cache to get the latest fetch.
         fetchPolicy: 'no-cache',
       });
+
+      if (res.loading) {
+        dispatch({ type: ACTIONS.LOAD_ADS });
+      }
 
       dispatch({
         type: ACTIONS.GET_ADS,
