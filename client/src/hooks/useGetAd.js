@@ -1,18 +1,17 @@
 import { useState, useEffect, useContext } from 'react';
 import { getLatLngByZipCode } from '../api/apiUtils';
 import { AdsContext, ACTIONS } from '../contexts/AdsContext';
-import { useQuery } from '@apollo/client';
-import { GET_AD_BY_ID } from '../GraphQL/queries';
+import { client } from '../components/V2App';
+import { gql } from '@apollo/client';
 
 export const useGetAd = (id, mapOption) => {
+  const [isLoadingMap, setLoadingMap] = useState(false);
   const [coordinates, setCoordinates] = useState(null);
   const [adsState, dispatch] = useContext(AdsContext);
   const { ad, isLoadingAd, adError } = adsState;
-  const { loading, error, data } = useQuery(GET_AD_BY_ID, {
-    variables: { id },
-  });
 
   const getMapData = async (zipCode) => {
+    setLoadingMap(true);
     try {
       const res = await getLatLngByZipCode(zipCode);
       if (res?.results?.length) {
@@ -24,29 +23,45 @@ export const useGetAd = (id, mapOption) => {
     } catch (error) {
       console.error(error);
     }
-  };
-
-  const initAd = async () => {
-    if (loading) {
-      dispatch({ type: ACTIONS.LOAD_AD });
-    }
-    if (error) {
-      dispatch({ type: ACTIONS.ERROR, payload: { error: error } });
-    }
-    if (data) {
-      if (mapOption) await getMapData(data.ad.zipCode);
-      dispatch({
-        type: ACTIONS.GET_AD,
-        payload: { ad: data.ad },
-      });
-    }
+    setLoadingMap(false);
   };
 
   useEffect(() => {
-    if (id) {
-      initAd();
-    }
-  }, [id, data]); // eslint-disable-line react-hooks/exhaustive-deps
+    const getAd = async () => {
+      dispatch({ type: ACTIONS.LOAD_AD });
+      try {
+        const res = await client.query({
+          query: gql`
+            query getAdById {
+              ad(id: "${id}") {
+                id
+                title
+                description
+                price
+                photo
+                condition
+                email
+                zipCode
+              }
+            }
+          `,
+        });
 
-  return { ad, coordinates, isLoadingAd, adError };
+        if (mapOption && res?.data?.ad) {
+          await getMapData(res.data.ad.zipCode);
+        }
+
+        dispatch({
+          type: ACTIONS.GET_AD,
+          payload: { ad: res?.data?.ad || ad },
+        });
+      } catch (error) {
+        dispatch({ type: ACTIONS.ERROR_AD, payload: { error: error } });
+      }
+    };
+
+    getAd();
+  }, []);
+
+  return { ad, coordinates, isLoadingAd, adError, isLoadingMap };
 };
