@@ -6,9 +6,9 @@ import { AdsProvider } from '../contexts/AdsContext';
 import { ApolloClient, InMemoryCache } from '@apollo/client';
 import { ApolloProvider } from '@apollo/client/react';
 
-const client = new ApolloClient({
+export const client = new ApolloClient({
   uri: '/api/graphql',
-  cache: new InMemoryCache()
+  cache: new InMemoryCache(),
 });
 
 const V2App = () => {
