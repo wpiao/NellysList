@@ -100,7 +100,7 @@ const initialState = {
   isLoadingAds: false,
   ads: [],
   error: null,
-  isLoadingAd: true,
+  isLoadingAd: false,
   ad: null,
   adError: null,
   isLoadingCreate: false,

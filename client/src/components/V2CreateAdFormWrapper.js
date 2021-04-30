@@ -4,9 +4,9 @@ import { useAlert } from 'react-alert';
 import { useParams } from 'react-router-dom';
 import { AdsContext, ACTIONS } from '../contexts/AdsContext';
 import { client } from '../components/V2App';
-import { gql } from '@apollo/client';
 import { postUpload } from '../api/apiUtils';
 import { GET_ADS } from '../GraphQL/queries';
+import { UPDATE_AD } from '../GraphQL/mutations';
 
 export const V2CreateAdFormWrapper = () => {
   const [adsState, dispatch] = useContext(AdsContext);
@@ -14,40 +14,31 @@ export const V2CreateAdFormWrapper = () => {
   const alert = useAlert();
   const { id } = useParams();
 
-  const updateAd = async (ad, base64encodedImage, selectedFile) => {
+  const updateAd = async (
+    { id, title, description, price, photo, condition, email, zipCode },
+    base64encodedImage,
+    selectedFile
+  ) => {
     dispatch({ type: ACTIONS.LOAD_UPDATE_AD });
 
-    if (ad.photo && selectedFile !== null) {
+    if (photo && selectedFile !== null) {
       const imageUrl = await postUpload(base64encodedImage);
-      ad.photo = imageUrl ? imageUrl : null;
+      photo = imageUrl ? imageUrl : null;
     }
 
     try {
       const mutationRes = await client.mutate({
-        mutation: gql`
-          mutation {
-            updateAd(
-              id: "${ad.id}",
-              title: "${ad.title}",
-              price: ${ad.price},
-              description: "${ad.description}",
-              photo: "${ad.photo}",
-              condition: "${ad.condition}",
-              email: "${ad.email}",
-              zipCode: "${ad.zipCode}",
-            ) {
-              id
-              title
-              price
-              description
-              photo
-              condition
-              email
-              zipCode
-              modifiedDate
-            }
-          }
-        `,
+        mutation: UPDATE_AD,
+        variables: {
+          id,
+          title,
+          description,
+          price: parseFloat(price),
+          photo,
+          condition,
+          email,
+          zipCode,
+        },
       });
 
       const res = await client.query({
