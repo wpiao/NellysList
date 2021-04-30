@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import { getLatLngByZipCode } from '../api/apiUtils';
 import { AdsContext, ACTIONS } from '../contexts/AdsContext';
 import { client } from '../components/V2App';
-import { gql } from '@apollo/client';
+import { GET_AD_BY_ID } from '../GraphQL/queries';
 
 export const useGetAd = (id, mapOption) => {
   const [isLoadingMap, setLoadingMap] = useState(false);
@@ -28,23 +28,14 @@ export const useGetAd = (id, mapOption) => {
 
   useEffect(() => {
     const getAd = async () => {
+      dispatch({ type: ACTIONS.LOAD_AD });
       try {
-        const res = await client.query({
-          query: gql`
-            query getAdById {
-              ad(id: "${id}") {
-                id
-                title
-                description
-                price
-                photo
-                condition
-                email
-                zipCode
-              }
-            }
-          `,
-        });
+        const res = id
+          ? await client.query({
+              query: GET_AD_BY_ID,
+              variables: { id },
+            })
+          : null;
 
         if (mapOption && res?.data?.ad) {
           await getMapData(res.data.ad.zipCode);

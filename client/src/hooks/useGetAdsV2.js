@@ -10,7 +10,10 @@ export const useGetAdsV2 = () => {
   useEffect(() => {
     const getAds = async () => {
       try {
-        const res = await client.query({ query: GET_ADS });
+        const res = await client.query({
+          query: GET_ADS,
+          fetchPolicy: 'no-cache',
+        });
         if (res.loading) {
           dispatch({ type: ACTIONS.LOAD_ADS });
         }

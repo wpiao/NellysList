@@ -7,8 +7,9 @@ import { useGetAd } from '../hooks/useGetAd';
 import { useParams } from 'react-router-dom';
 import { ACTIONS, AdsContext } from '../contexts/AdsContext';
 import { client } from '../components/V2App';
-import { gql } from '@apollo/client';
 import { useAlert } from 'react-alert';
+import { GET_ADS } from '../GraphQL/queries';
+import { DELETE_AD } from '../GraphQL/mutations';
 
 export const V2AdDetails = () => {
   const { id } = useParams();
@@ -26,34 +27,12 @@ export const V2AdDetails = () => {
     dispatch({ type: ACTIONS.LOAD_DELETE_AD });
     try {
       const mutationRes = await client.mutate({
-        mutation: gql`
-          mutation {
-            deleteAd(id: "${ad.id}") {
-              id
-              title
-              price
-              description
-              photo
-              condition
-              email
-              zipCode
-              modifiedDate
-            }
-          }
-        `,
+        mutation: DELETE_AD,
+        variables: { id },
       });
 
       const res = await client.query({
-        query: gql`
-          query getAds {
-            ads {
-              id
-              title
-              price
-              photo
-            }
-          }
-        `,
+        query: GET_ADS,
         fetchPolicy: 'no-cache',
       });
 

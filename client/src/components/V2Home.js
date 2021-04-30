@@ -9,61 +9,42 @@ import { useAlert } from 'react-alert';
 import { V2AdDetails } from './V2AdDetails';
 import { V2CreateAdFormWrapper } from './V2CreateAdFormWrapper';
 import { client } from '../components/V2App';
-import { gql } from '@apollo/client';
+import { GET_ADS } from '../GraphQL/queries';
+import { CREATE_AD } from '../GraphQL/mutations';
 
 export const V2Home = () => {
   const { ads, isLoadingAds, dispatch } = useGetAdsV2();
   const alert = useAlert();
 
-  const createAd = async (ad, base64encodedImage, selectedFile) => {
+  const createAd = async (
+    { title, description, price, photo, condition, email, zipCode },
+    base64encodedImage,
+    selectedFile
+  ) => {
     dispatch({ type: ACTIONS.LOAD_CREATE_AD });
 
     if (selectedFile) {
       // First, attempt to upload image
       const imageUrl = await postUpload(base64encodedImage);
-      ad.photo = imageUrl ? imageUrl : null;
+      photo = imageUrl ? imageUrl : null;
     }
 
     try {
       const mutationRes = await client.mutate({
-        mutation: gql`
-          mutation {
-            createAd(
-              title: "${ad.title}",
-              price: ${ad.price},
-              description: "${ad.description}",
-              photo: "${ad.photo}",
-              condition: "${ad.condition}",
-              email: "${ad.email}",
-              zipCode: "${ad.zipCode}",
-            ) {
-              id
-              title
-              description
-              price
-              photo
-              condition
-              email
-              zipCode
-              modifiedDate
-              createdDate
-            }
-          }
-        `,
+        mutation: CREATE_AD,
+        variables: {
+          title,
+          description,
+          price: parseFloat(price),
+          photo,
+          condition,
+          email,
+          zipCode,
+        },
       });
 
       const res = await client.query({
-        query: gql`
-          query getAds {
-            ads {
-              id
-              title
-              price
-              photo
-            }
-          }
-        `,
-        // fetching from cache will not have newly created ad. disable cache to get the latest fetch.
+        query: GET_ADS,
         fetchPolicy: 'no-cache',
       });
 

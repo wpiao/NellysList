@@ -50,6 +50,7 @@ export const V2CreateAdForm = ({ id, handleSubmit }) => {
   } = adsState;
 
   useGetAd(id, false);
+  const isLoading = isLoadingCreate || isLoadingUpdate || (id && isLoadingAd);
 
   useEffect(() => {
     if (id && adResponse) {
@@ -87,8 +88,8 @@ export const V2CreateAdForm = ({ id, handleSubmit }) => {
     history.push(`/ad/${id}`);
   };
 
-  if (isLoadingCreate || isLoadingUpdate || isLoadingAd) {
-    return <SpinnerWrapper isLoading={true} />;
+  if (isLoading) {
+    return <SpinnerWrapper isLoading={isLoading} />;
   }
 
   return (

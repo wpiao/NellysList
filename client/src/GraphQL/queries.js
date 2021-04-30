@@ -12,7 +12,7 @@ export const GET_ADS = gql`
 `;
 
 export const GET_AD_BY_ID = gql`
-  query getAdById($id: String!){
+  query getAdById($id: String!) {
     ad(id: $id) {
       id
       title
