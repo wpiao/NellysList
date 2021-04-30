@@ -8,7 +8,7 @@ export const useGetAd = (id, mapOption) => {
   const [isLoadingMap, setLoadingMap] = useState(false);
   const [coordinates, setCoordinates] = useState(null);
   const [adsState, dispatch] = useContext(AdsContext);
-  const { ad, isLoadingAd, adError } = adsState;
+  const { ad } = adsState;
 
   const getMapData = async (zipCode) => {
     setLoadingMap(true);
@@ -46,10 +46,6 @@ export const useGetAd = (id, mapOption) => {
           `,
         });
 
-        if (res.loading) {
-          dispatch({ type: ACTIONS.LOAD_AD });
-        }
-
         if (mapOption && res?.data?.ad) {
           await getMapData(res.data.ad.zipCode);
         }
@@ -64,7 +60,11 @@ export const useGetAd = (id, mapOption) => {
     };
 
     getAd();
+
+    return () => {
+      dispatch({ type: ACTIONS.CLEAN_AD });
+    };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  return { ad, coordinates, isLoadingAd, adError, isLoadingMap };
+  return { coordinates, isLoadingMap };
 };

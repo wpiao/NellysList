@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Container, Col, Form, Button } from 'react-bootstrap';
 import { CONDITION } from './Condition';
 import { Upload } from './Upload';
@@ -7,6 +7,7 @@ import { AdFormInputGroup } from './AdFormInputGroup';
 import { ImagePreview } from './ImagePreview';
 import { useHistory } from 'react-router-dom';
 import { useGetAd } from '../hooks/useGetAd';
+import { AdsContext } from '../contexts/AdsContext';
 
 const AD_INPUTS = {
   ID: 'id',
@@ -34,13 +35,21 @@ const INITIAL_AD_STATE = {
   zipCode: null,
 };
 
-export const V2CreateAdForm = ({ id, isLoading, handleSubmit }) => {
+export const V2CreateAdForm = ({ id, handleSubmit }) => {
   const [ad, setAd] = useState(INITIAL_AD_STATE);
   const [validated, setValidated] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewSource, setPreviewSource] = useState(null);
   const history = useHistory();
-  const { ad: adResponse } = useGetAd(id, false);
+  const [adsState] = useContext(AdsContext);
+  const {
+    ad: adResponse,
+    isLoadingCreate,
+    isLoadingUpdate,
+    isLoadingAd,
+  } = adsState;
+
+  useGetAd(id, false);
 
   useEffect(() => {
     if (id && adResponse) {
@@ -78,11 +87,12 @@ export const V2CreateAdForm = ({ id, isLoading, handleSubmit }) => {
     history.push(`/ad/${id}`);
   };
 
+  if (isLoadingCreate || isLoadingUpdate || isLoadingAd) {
+    return <SpinnerWrapper isLoading={true} />;
+  }
+
   return (
     <Container>
-      {/* TODO: Fix loading state. Need to cover 3 scenarios.
-                1. create btn, 2. update btn 3. load ad by id */}
-      <SpinnerWrapper isLoading={isLoading} />
       <Form onSubmit={submit} noValidate validated={validated}>
         <Form.Row>
           <Col xs={4}>

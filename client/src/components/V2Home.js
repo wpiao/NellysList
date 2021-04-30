@@ -16,6 +16,8 @@ export const V2Home = () => {
   const alert = useAlert();
 
   const createAd = async (ad, base64encodedImage, selectedFile) => {
+    dispatch({ type: ACTIONS.LOAD_CREATE_AD });
+
     if (selectedFile) {
       // First, attempt to upload image
       const imageUrl = await postUpload(base64encodedImage);
@@ -23,7 +25,7 @@ export const V2Home = () => {
     }
 
     try {
-      await client.mutate({
+      const mutationRes = await client.mutate({
         mutation: gql`
           mutation {
             createAd(
@@ -74,10 +76,16 @@ export const V2Home = () => {
         payload: { ads: res?.data?.ads || ads },
       });
 
-      alert.show('Successfully Saved!', { type: 'success' });
+      if (mutationRes?.data?.createAd) {
+        alert.show('Successfully Added!', { type: 'success' });
+      }
+
+      dispatch({ type: ACTIONS.UNLOAD_CREATE_AD });
     } catch (err) {
+      dispatch({ type: ACTIONS.UNLOAD_CREATE_AD });
       dispatch({ type: ACTIONS.ERROR_ADS, payload: { error: err } });
       alert.show('Something Went Wrong!', { type: 'error' });
+      dispatch({ type: ACTIONS.UNLOAD_CREATE_AD });
     }
   };
 
@@ -90,9 +98,7 @@ export const V2Home = () => {
       />
       <Route
         path="/ads/create"
-        children={
-          <V2CreateAdForm isLoading={isLoadingAds} handleSubmit={createAd} />
-        }
+        children={<V2CreateAdForm handleSubmit={createAd} />}
       />
       <Route path="/ad/:id" exact children={<V2AdDetails />} />
       <Route path="/ad/:id/edit" exact children={<V2CreateAdFormWrapper />} />

@@ -30,7 +30,7 @@ const ads = [
     id: '4adb5800-1448-4ad5-bcb9-cbc9299fce83',
     title: 'Used Tires x4',
     price: 50,
-    description: '15”16”17”18”19”20” ALL SIZE TIRES AVAILABLE',
+    description: 'ALL SIZE TIRES AVAILABLE',
     photo:
       'http://res.cloudinary.com/drtxi16qr/image/upload/v1619205802/nellys_list/lnrmvs6be93vlg29ioes.jpg',
     condition: 'Old',
@@ -57,7 +57,7 @@ const ads = [
     title: 'Razor Gaming Laptop',
     price: 1300,
     description:
-      'Comes with charger. Specs 15.6" Gaming Laptop - Intel Core i7 - 16GB Memory - NVIDIA GeForce RTX 2060 ,512GB SSD works amazing only seeking because not fully taking advantage of laptop.',
+      'Comes with charger. Specs 15.6 Gaming Laptop - Intel Core i7 - 16GB Memory - NVIDIA GeForce RTX 2060 ,512GB SSD works amazing only seeking because not fully taking advantage of laptop.',
     photo:
       'http://res.cloudinary.com/drtxi16qr/image/upload/v1619206584/nellys_list/o7vmjtobbevhmh7kx0hq.jpg',
     condition: 'Old',
@@ -195,7 +195,7 @@ const RootMutationType = new GraphQLObjectType({
       resolve: (parent, args) => {
         const index = ads.findIndex((ad) => args.id === ad.id);
         const deletedAd = ads[index];
-        if (deletedAd) {     
+        if (deletedAd) {
           ads.splice(index, 1);
           return deletedAd;
         } else {

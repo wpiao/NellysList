@@ -8,9 +8,15 @@ export const ACTIONS = {
   LOAD_AD: 'load-ad',
   GET_AD: 'get-ad',
   ERROR_AD: 'error-ad',
+  LOAD_CREATE_AD: 'load-create-ad',
+  UNLOAD_CREATE_AD: 'unload-create-ad',
+  ERROR_CREATE_AD: 'error-create-ad',
+  LOAD_UPDATE_AD: 'load-update-ad',
+  UNLOAD_UPDATE_AD: 'unload-update-ad',
+  ERROR_UPDATE_AD: 'error-update-ad',
   LOAD_DELETE_AD: 'load-delete-ad',
   UNLOAD_DELETE_AD: 'unload-delete-ad',
-  ERROR_DELETE_AD: 'error-delete-ad',
+  CLEAN_AD: 'clean-ad',
 };
 
 const reducer = (state, action) => {
@@ -48,6 +54,26 @@ const reducer = (state, action) => {
         adError: action.payload.error,
         ad: null,
       };
+    case ACTIONS.LOAD_CREATE_AD:
+      return {
+        ...state,
+        isLoadingCreate: true,
+      };
+    case ACTIONS.UNLOAD_CREATE_AD:
+      return {
+        ...state,
+        isLoadingCreate: false,
+      };
+    case ACTIONS.LOAD_UPDATE_AD:
+      return {
+        ...state,
+        isLoadingUpdate: true,
+      };
+    case ACTIONS.UNLOAD_UPDATE_AD:
+      return {
+        ...state,
+        isLoadingUpdate: false,
+      };
     case ACTIONS.LOAD_DELETE_AD:
       return {
         ...state,
@@ -57,6 +83,12 @@ const reducer = (state, action) => {
       return {
         ...state,
         isLoadingDelete: false,
+      };
+    case ACTIONS.CLEAN_AD:
+      return {
+        ...state,
+        ad: null,
+        isLoadingAd: true,
       };
     default:
       return state;
@@ -68,9 +100,11 @@ const initialState = {
   isLoadingAds: false,
   ads: [],
   error: null,
-  isLoadingAd: false,
+  isLoadingAd: true,
   ad: null,
   adError: null,
+  isLoadingCreate: false,
+  isLoadingUpdate: false,
   isLoadingDelete: false,
 };
 
