@@ -10,6 +10,7 @@ import { V2AdDetails } from './V2AdDetails';
 import { V2CreateAdFormWrapper } from './V2CreateAdFormWrapper';
 import { client } from '../components/V2App';
 import { gql } from '@apollo/client';
+import { GET_ADS } from '../GraphQL/queries';
 
 export const V2Home = () => {
   const { ads, isLoadingAds, dispatch } = useGetAdsV2();
@@ -53,17 +54,7 @@ export const V2Home = () => {
       });
 
       const res = await client.query({
-        query: gql`
-          query getAds {
-            ads {
-              id
-              title
-              price
-              photo
-            }
-          }
-        `,
-        // fetching from cache will not have newly created ad. disable cache to get the latest fetch.
+        query: GET_ADS,
         fetchPolicy: 'no-cache',
       });
 

@@ -9,6 +9,7 @@ import { ACTIONS, AdsContext } from '../contexts/AdsContext';
 import { client } from '../components/V2App';
 import { gql } from '@apollo/client';
 import { useAlert } from 'react-alert';
+import { GET_ADS } from '../GraphQL/queries';
 
 export const V2AdDetails = () => {
   const { id } = useParams();
@@ -44,16 +45,7 @@ export const V2AdDetails = () => {
       });
 
       const res = await client.query({
-        query: gql`
-          query getAds {
-            ads {
-              id
-              title
-              price
-              photo
-            }
-          }
-        `,
+        query: GET_ADS,
         fetchPolicy: 'no-cache',
       });
 

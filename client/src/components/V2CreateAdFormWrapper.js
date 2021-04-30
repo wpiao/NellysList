@@ -6,6 +6,7 @@ import { AdsContext, ACTIONS } from '../contexts/AdsContext';
 import { client } from '../components/V2App';
 import { gql } from '@apollo/client';
 import { postUpload } from '../api/apiUtils';
+import { GET_ADS } from '../GraphQL/queries';
 
 export const V2CreateAdFormWrapper = () => {
   const [adsState, dispatch] = useContext(AdsContext);
@@ -50,16 +51,7 @@ export const V2CreateAdFormWrapper = () => {
       });
 
       const res = await client.query({
-        query: gql`
-          query getAds {
-            ads {
-              id
-              title
-              price
-              photo
-            }
-          }
-        `,
+        query: GET_ADS,
         fetchPolicy: 'no-cache',
       });
 
