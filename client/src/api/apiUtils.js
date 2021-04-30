@@ -35,7 +35,6 @@ export const postUpload = async (base64encodedImage) => {
       .post('/api/upload')
       .send({ data: base64encodedImage })
       .set('accept', 'json');
-    console.log('res', res);
     imageUrl = res?.body?.data;
   } catch (error) {
     console.error(error);

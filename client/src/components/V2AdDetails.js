@@ -23,6 +23,7 @@ export const V2AdDetails = () => {
   };
 
   const handleDelete = async () => {
+    dispatch({ type: ACTIONS.LOAD_DELETE_AD });
     try {
       const mutationRes = await client.mutate({
         mutation: gql`
@@ -41,16 +42,6 @@ export const V2AdDetails = () => {
           }
         `,
       });
-
-      if (mutationRes.loading) {
-        dispatch({ type: ACTIONS.LOAD_DELETE_AD });
-      }
-
-      if (mutationRes?.data?.deleteAd) {
-        alert.show('Successfully Deleted!', { type: 'success' });
-      }
-
-      dispatch({ type: ACTIONS.UNLOAD_DELETE_AD });
 
       const res = await client.query({
         query: gql`
@@ -74,8 +65,15 @@ export const V2AdDetails = () => {
         type: ACTIONS.GET_ADS,
         payload: { ads: res?.data?.ads || ads },
       });
+
+      if (mutationRes?.data?.deleteAd) {
+        alert.show('Successfully Deleted!', { type: 'success' });
+      }
+
+      dispatch({ type: ACTIONS.UNLOAD_DELETE_AD });
     } catch (error) {
       alert.show('Something Went Wrong!', { type: 'error' });
+      dispatch({ type: ACTIONS.UNLOAD_DELETE_AD });
     }
     history.push('/');
   };
@@ -106,7 +104,7 @@ export const V2AdDetails = () => {
 
   return (
     <>
-      {ad && (
+      {!isLoadingAd && ad && (
         <Container className="mb-5">
           <SpinnerWrapper isLoading={isLoadingAd || isLoadingDelete} />
           <Row>
