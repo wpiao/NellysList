@@ -1,22 +1,83 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Container, Col, Card, Form, Button, Row } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import SpinnerWrapper from './SpinnerWrapper';
 import { Map } from './Map';
 import { useGetAd } from '../hooks/useGetAd';
 import { useParams } from 'react-router-dom';
+import { ACTIONS, AdsContext } from '../contexts/AdsContext';
+import { client } from '../components/V2App';
+import { gql } from '@apollo/client';
+import { useAlert } from 'react-alert';
 
 export const V2AdDetails = () => {
   const { id } = useParams();
   const history = useHistory();
   const { ad, isLoadingAd, coordinates, isLoadingMap } = useGetAd(id, true);
+  const [adsState, dispatch] = useContext(AdsContext);
+  const { ads, isLoadingDelete } = adsState;
+  const alert = useAlert();
 
   const handleEdit = () => {
     history.push(`/ad/${id}/edit`);
   };
 
   const handleDelete = async () => {
-    // TODO: GraphQL Delete by ID
+    try {
+      const mutationRes = await client.mutate({
+        mutation: gql`
+          mutation {
+            deleteAd(id: "${ad.id}") {
+              id
+              title
+              price
+              description
+              photo
+              condition
+              email
+              zipCode
+              modifiedDate
+            }
+          }
+        `,
+      });
+
+      if (mutationRes.loading) {
+        dispatch({ type: ACTIONS.LOAD_DELETE_AD });
+      }
+
+      if (mutationRes?.data?.deleteAd) {
+        alert.show('Successfully Deleted!', { type: 'success' });
+      }
+
+      dispatch({ type: ACTIONS.UNLOAD_DELETE_AD });
+
+      const res = await client.query({
+        query: gql`
+          query getAds {
+            ads {
+              id
+              title
+              price
+              photo
+            }
+          }
+        `,
+        fetchPolicy: 'no-cache',
+      });
+
+      if (res.loading) {
+        dispatch({ type: ACTIONS.LOAD_ADS });
+      }
+
+      dispatch({
+        type: ACTIONS.GET_ADS,
+        payload: { ads: res?.data?.ads || ads },
+      });
+    } catch (error) {
+      alert.show('Something Went Wrong!', { type: 'error' });
+    }
+    history.push('/');
   };
 
   const renderMap = () => {
@@ -47,8 +108,7 @@ export const V2AdDetails = () => {
     <>
       {ad && (
         <Container className="mb-5">
-          {/* TODO: spinner for waiting on DELETE */}
-          <SpinnerWrapper isLoading={isLoadingAd} />
+          <SpinnerWrapper isLoading={isLoadingAd || isLoadingDelete} />
           <Row>
             <Col xs={6}>
               <Card>

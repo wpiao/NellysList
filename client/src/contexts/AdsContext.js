@@ -1,19 +1,22 @@
 import React, { useReducer, useMemo, createContext } from 'react';
 
 export const ACTIONS = {
+  SEARCH_ADS: 'set-filtered-ads',
   LOAD_ADS: 'load-ads',
   GET_ADS: 'get-ads',
-  SEARCH_ADS: 'set-filtered-ads',
   ERROR_ADS: 'error-ads',
   LOAD_AD: 'load-ad',
   GET_AD: 'get-ad',
   ERROR_AD: 'error-ad',
-  LOAD_EDIT_AD: 'load-edit-ad',
-  ERROR_EDIT_AD: 'error-edit-ad',
+  LOAD_DELETE_AD: 'load-delete-ad',
+  UNLOAD_DELETE_AD: 'unload-delete-ad',
+  ERROR_DELETE_AD: 'error-delete-ad',
 };
 
 const reducer = (state, action) => {
   switch (action.type) {
+    case ACTIONS.SEARCH_ADS:
+      return { ...state, ads: action.payload.ads };
     case ACTIONS.LOAD_ADS:
       return { ...state, isLoadingAds: true, ads: [] };
     case ACTIONS.GET_ADS:
@@ -23,8 +26,6 @@ const reducer = (state, action) => {
         ads: action.payload.ads,
         searchedAds: action.payload.ads,
       };
-    case ACTIONS.SEARCH_ADS:
-      return { ...state, ads: action.payload.ads };
     case ACTIONS.ERROR_ADS:
       return {
         ...state,
@@ -47,19 +48,30 @@ const reducer = (state, action) => {
         adError: action.payload.error,
         ad: null,
       };
+    case ACTIONS.LOAD_DELETE_AD:
+      return {
+        ...state,
+        isLoadingDelete: true,
+      };
+    case ACTIONS.UNLOAD_DELETE_AD:
+      return {
+        ...state,
+        isLoadingDelete: false,
+      };
     default:
       return state;
   }
 };
 
 const initialState = {
+  searchedAds: [],
   isLoadingAds: false,
   ads: [],
-  searchedAds: [],
   error: null,
   isLoadingAd: false,
   ad: null,
   adError: null,
+  isLoadingDelete: false,
 };
 
 export const AdsContext = createContext(initialState);
