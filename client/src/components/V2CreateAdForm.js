@@ -41,10 +41,15 @@ export const V2CreateAdForm = ({ id, handleSubmit }) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewSource, setPreviewSource] = useState(null);
   const history = useHistory();
-  const { ad: adResponse } = useGetAd(id, false);
-  const { isLoadingCreate, isLoadingUpdate, isLoadingAd } = useContext(
-    AdsContext
-  );
+  const [adsState] = useContext(AdsContext);
+  const {
+    ad: adResponse,
+    isLoadingCreate,
+    isLoadingUpdate,
+    isLoadingAd,
+  } = adsState;
+
+  useGetAd(id, false);
 
   useEffect(() => {
     if (id && adResponse) {
@@ -82,11 +87,12 @@ export const V2CreateAdForm = ({ id, handleSubmit }) => {
     history.push(`/ad/${id}`);
   };
 
+  if (isLoadingCreate || isLoadingUpdate || isLoadingAd) {
+    return <SpinnerWrapper isLoading={true} />;
+  }
+
   return (
     <Container>
-      <SpinnerWrapper
-        isLoading={(isLoadingCreate || isLoadingUpdate, isLoadingAd)}
-      />
       <Form onSubmit={submit} noValidate validated={validated}>
         <Form.Row>
           <Col xs={4}>

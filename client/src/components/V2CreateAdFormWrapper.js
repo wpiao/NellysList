@@ -78,6 +78,7 @@ export const V2CreateAdFormWrapper = () => {
 
       dispatch({ type: ACTIONS.UNLOAD_UPDATE_AD });
     } catch (err) {
+      console.log(err);
       dispatch({ type: ACTIONS.ERROR_ADS, payload: { error: err } });
       alert.show('Something Went Wrong!', { type: 'error' });
       dispatch({ type: ACTIONS.UNLOAD_UPDATE_AD });

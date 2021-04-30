@@ -13,9 +13,9 @@ import { useAlert } from 'react-alert';
 export const V2AdDetails = () => {
   const { id } = useParams();
   const history = useHistory();
-  const { ad, isLoadingAd, coordinates, isLoadingMap } = useGetAd(id, true);
+  const { coordinates, isLoadingMap } = useGetAd(id, true);
   const [adsState, dispatch] = useContext(AdsContext);
-  const { ads, isLoadingDelete } = adsState;
+  const { ad, isLoadingAd, ads, isLoadingDelete } = adsState;
   const alert = useAlert();
 
   const handleEdit = () => {
@@ -102,11 +102,13 @@ export const V2AdDetails = () => {
     }
   };
 
+  if (isLoadingAd || isLoadingDelete) {
+    return <SpinnerWrapper isLoading={true} />;
+  }
   return (
     <>
       {!isLoadingAd && ad && (
         <Container className="mb-5">
-          <SpinnerWrapper isLoading={isLoadingAd || isLoadingDelete} />
           <Row>
             <Col xs={6}>
               <Card>

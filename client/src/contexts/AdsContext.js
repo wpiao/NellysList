@@ -16,7 +16,7 @@ export const ACTIONS = {
   ERROR_UPDATE_AD: 'error-update-ad',
   LOAD_DELETE_AD: 'load-delete-ad',
   UNLOAD_DELETE_AD: 'unload-delete-ad',
-  ERROR_DELETE_AD: 'error-delete-ad',
+  CLEAN_AD: 'clean-ad',
 };
 
 const reducer = (state, action) => {
@@ -84,6 +84,12 @@ const reducer = (state, action) => {
         ...state,
         isLoadingDelete: false,
       };
+    case ACTIONS.CLEAN_AD:
+      return {
+        ...state,
+        ad: null,
+        isLoadingAd: true,
+      };
     default:
       return state;
   }
@@ -94,7 +100,7 @@ const initialState = {
   isLoadingAds: false,
   ads: [],
   error: null,
-  isLoadingAd: false,
+  isLoadingAd: true,
   ad: null,
   adError: null,
   isLoadingCreate: false,

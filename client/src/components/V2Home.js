@@ -82,6 +82,7 @@ export const V2Home = () => {
 
       dispatch({ type: ACTIONS.UNLOAD_CREATE_AD });
     } catch (err) {
+      dispatch({ type: ACTIONS.UNLOAD_CREATE_AD });
       dispatch({ type: ACTIONS.ERROR_ADS, payload: { error: err } });
       alert.show('Something Went Wrong!', { type: 'error' });
       dispatch({ type: ACTIONS.UNLOAD_CREATE_AD });
